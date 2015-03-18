@@ -1,0 +1,49 @@
+﻿@model WorkingOut.Models.Workout
+
+@{
+    ViewBag.Title = "Add A Workout";
+}
+
+<h2>Add A Workout</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.WorkoutDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.WorkoutDate, new SelectList(ViewBag.Exercises, "Value", "Text"))
+                @Html.ValidationMessageFor(model => model.WorkoutDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div id="routine">
+            @Html.EditorFor(model => model.Routine)
+        </div>
+
+        <button type="button" class="btn btn-default" id="btnAdd">Add An Exercise To The Routine</button>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create Workout" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/Routine")
+}
+

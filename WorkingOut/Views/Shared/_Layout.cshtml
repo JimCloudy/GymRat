@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Gym Rat</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+
+    <div class="container">
+      <div class="header">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+              <li role="presentation" class="active"><a href="#">Home</a></li>
+              <li role="presentation"><a href="#">About</a></li>
+              <li role="presentation"><a href="#">Contact</a></li>
+              <li role="presentation"><a href="#">Sign In</a></li>
+              <li role="presentation">@Html.ActionLink("My Workouts","Index","Workout")</li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Gym Rat</h3>
+      </div>
+
+      @RenderBody()
+
+      <footer class="footer">
+        <p>&copy; Company 2014</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts")
+    @RenderSection("scripts", false)
+  </body>
+</html>
