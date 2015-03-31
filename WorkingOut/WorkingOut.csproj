@@ -168,10 +168,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\EditWorkoutViewModel.cs" />
     <Compile Include="Models\Exercise.cs" />
     <Compile Include="Models\HtmlHelpers\HtmlHelpers.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Set.cs" />
+    <Compile Include="Models\AddedExerciseViewModel.cs" />
     <Compile Include="Models\WorkoutExercise.cs" />
     <Compile Include="Models\Workout.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -181,6 +184,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\jumbotron-narrow.css" />
+    <Content Include="Content\Workout.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -190,6 +194,8 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\coded\EditRoutine.js" />
     <Content Include="Scripts\coded\NewRoutine.js" />
+    <Content Include="Scripts\coded\WorkoutIndex.js" />
+    <Content Include="Scripts\coded\CreateWorkout.js" />
     <Content Include="Scripts\ie-10-viewport-bug-workaround.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -245,6 +251,11 @@
     <Content Include="Views\Workout\EditorTemplates\WorkoutExercise.cshtml" />
     <Content Include="Views\Workout\_WorkoutExercise.cshtml" />
     <Content Include="Views\Workout\DisplayTemplates\WorkoutExercise.cshtml" />
+    <Content Include="Views\Workout\_NoWorkouts.cshtml" />
+    <Content Include="Views\Workout\_Workouts.cshtml" />
+    <Content Include="Views\Workout\Create - Copy.cshtml" />
+    <Content Include="Views\Workout\_Set.cshtml" />
+    <Content Include="Views\Workout\WorkoutExercise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

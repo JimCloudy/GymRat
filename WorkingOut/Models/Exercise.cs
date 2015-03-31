@@ -11,6 +11,6 @@ namespace WorkingOut.Models
         public string Name { get; set; }
         public string Type { get; set; }
         public string BodyPart { get; set; }
-        public string imageUrl { get; set; }
+        public string WeightInfo { get; set; }
     }
 }

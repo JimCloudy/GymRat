@@ -28,14 +28,13 @@ namespace WorkingOut.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Workout workout = db.Workouts.Find(id);
+            //Workout workout = db.Workouts.Find(id);
+            Workout workout = db.Workouts.Include("Routine.Sets").Single(w => w.ID == id);
+
             if (workout == null)
             {
                 return HttpNotFound();
             }
-
-            workout.Routine = db.WorkoutExercises.Where(x => x.WorkoutID == id).ToList();
-
 
             return View(workout);
         }
@@ -45,8 +44,10 @@ namespace WorkingOut.Controllers
         {
             Workout workout = new Workout();
             workout.WorkoutDate = DateTime.Now;
+            workout.WorkoutType = "Weight Lifting";
             
             ViewBag.Exercises = PopulateExerciseList();
+            ViewBag.ExerciseTypes = PopulateTypeList();
 
             return View(workout);
         }
@@ -60,14 +61,25 @@ namespace WorkingOut.Controllers
         {
             if (ModelState.IsValid)
             {
-                foreach (var exercise in workout.Routine.ToList())
+                Workout w = new Workout();
+                w.WorkoutDate = workout.WorkoutDate;
+                w.ScaleWeight = workout.ScaleWeight;
+                w.Duration = workout.Duration;
+                w.WorkoutType = workout.WorkoutType;
+                w.Notes = workout.Notes;
+                db.Workouts.Add(w);
+
+                foreach (WorkoutExercise exercise in workout.Routine.ToList())
                 {
-                    if (exercise.DeleteExercise == true)
+                    exercise.WorkoutID = w.ID;
+                    db.WorkoutExercises.Add(exercise);
+
+                    foreach (Set set in exercise.Sets.ToList())
                     {
-                        workout.Routine.Remove(exercise);
+                        set.WorkoutExerciseID = exercise.ID;
+                        db.Sets.Add(set);
                     }
                 }
-                db.Workouts.Add(workout);
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -92,11 +104,32 @@ namespace WorkingOut.Controllers
                 return HttpNotFound();
             }
 
-            workout.Routine = db.WorkoutExercises.Where(x => x.WorkoutID == id).ToList();
+            EditWorkoutViewModel model = new EditWorkoutViewModel();
+            model.AddedExercises = new List<AddedExerciseViewModel>();
+
+            model.Workout = workout;
+
+            List<WorkoutExercise> exercises = db.WorkoutExercises.Where(x => x.WorkoutID == id).ToList();
+
+            for (int i = 0; i < exercises.Count(); i++)
+            {
+                AddedExerciseViewModel addedExercise = new AddedExerciseViewModel();
+
+                addedExercise.Delete = false;
+                addedExercise.Exercise = exercises[i];
+                addedExercise.ExerciseIndex = i;
+                var temp = exercises[i].ExerciseID;
+                addedExercise.ExerciseName = db.Exercises.Where(x => x.ID == temp).Single().Name;
+                temp = exercises[i].ID;
+                addedExercise.Sets = db.Sets.Where(x => x.WorkoutExerciseID == temp ).ToList();
+
+                model.AddedExercises.Add(addedExercise);
+            }
 
             ViewBag.Exercises = PopulateExerciseList();
+            ViewBag.ExerciseTypes = PopulateTypeList();
 
-            return View(workout);
+            return View(model);
         }
 
         // POST: Workout/Edit/5
@@ -110,9 +143,11 @@ namespace WorkingOut.Controllers
             {
                 foreach (var exercise in workout.Routine.ToList())
                 {
-                    if (exercise.DeleteExercise == true)
+                    bool temp = false;
+                    //if (exercise.DeleteExercise == true)
+                    if(temp)
                     {
-                        workout.Routine.Remove(exercise);
+                        //workout.Routine.Remove(exercise);
                         if (exercise.ID != 0)
                         {
                             WorkoutExercise w = db.WorkoutExercises.Where(x => x.ID == exercise.ID && x.WorkoutID == exercise.WorkoutID).Single();
@@ -125,9 +160,28 @@ namespace WorkingOut.Controllers
                         {
                             exercise.WorkoutID = workout.ID;
                             db.WorkoutExercises.Add(exercise);
+
+                            foreach (Set set in exercise.Sets.ToList())
+                            {
+                                set.WorkoutExerciseID = exercise.ID;
+                                db.Sets.Add(set);
+                            }
                         }
                         else
-                        {
+                        {                            
+                            foreach (Set set in exercise.Sets.ToList())
+                            {
+                                if (set.ID == 0)
+                                {
+                                    set.WorkoutExerciseID = exercise.ID;
+                                    db.Sets.Add(set);
+                                }
+                                else
+                                {
+                                    db.Entry(set).State = EntityState.Modified;
+                                }
+                            }
+
                             db.Entry(exercise).State = EntityState.Modified;
                         }
                     }
@@ -185,11 +239,9 @@ namespace WorkingOut.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult AddToRoutine()
+        public ActionResult AddToRoutine(int exerciseID, Dictionary<string, int> setsToAdd)
         {
-            WorkoutExercise w = new WorkoutExercise();
-
-            ViewBag.Exercises = PopulateExerciseList();
+            var w = new WorkoutExercise();
 
             return PartialView("~/Views/Workout/EditorTemplates/WorkoutExercise.cshtml", w);
         }
@@ -207,6 +259,11 @@ namespace WorkingOut.Controllers
                 };
 
             return items;
+        }
+
+        private IEnumerable<SelectListItem> PopulateTypeList()
+        {
+            return new SelectList(new[] { "Abs", "Back", "Bicep", "Calves", "Chest", "Forearms", "Legs", "Other", "Shoulders", "Tricep" }.Select(x => new { value = x, text = x }), "value", "text"); 
         }
     }
 }

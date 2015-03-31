@@ -1,0 +1,105 @@
+﻿.grey_div {
+    border: 10px solid #f0f0f0;
+    background-color: #f0f0f0; 
+    border-radius: 10px;
+}
+
+div.form-horizontal .form-group {
+    margin-left: -5px;
+    margin-right: -5px;
+    margin-bottom: 10px;
+}
+
+.display-inline{
+    display:inline-block;
+}
+
+div.set_entry{
+    border: 1px solid #d8d8d8;
+    border-radius:10px;
+    background-color: #fff;
+}
+
+div.set_entry .set_entry_num{
+    display:inline-block; 
+    width:25%; 
+    margin-left:5px; 
+    margin-right:5px;
+    margin-bottom: 5px;
+    text-align:center;
+    color: #fff;
+    background-color: #f0f0f0;
+    border-radius:5px;
+}
+
+div.set_entry .set_entry_rep{
+    width:30%;
+}
+
+div.set_entry .set_entry_input{
+    border-radius:5px;
+    width:100%;
+}
+
+div.set_entry .set_entry_wt{
+    width:30%;
+}
+
+.workout_info{
+    background-color: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.form-group .col-md-12{
+    padding-left:10px;
+    padding-right:10px;
+}
+
+#exercise_entry .col-md-3{
+    padding-left:5px;
+    padding-right:5px;
+}
+
+#date_div{
+    background-color: #555;
+    border-radius: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.set_added{
+    border: 1px solid #d8d8d8;
+    border-radius:10px;
+    background-color: #fff;
+}
+
+.set_added_num{
+    display:inline-block; 
+    width:15%; 
+    margin-left:5px; 
+    margin-right:5px;
+    margin-bottom: 5px;
+    text-align:center;
+    color: #fff;
+    background-color: #f0f0f0;
+    border-radius:5px;
+}
+
+.set_added_input{
+    width:75%;
+}
+
+.set_added_input input{
+    width: 30%;
+    border-radius:5px;
+}
+
+.set_rows .col-md-3{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+

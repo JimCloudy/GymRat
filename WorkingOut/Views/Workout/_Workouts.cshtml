@@ -1,0 +1,29 @@
+﻿@model IEnumerable<WorkingOut.Models.Workout>
+
+<div>
+    <p><a href="/Workout/Create" class="btn btn-lg btn-block btn-primary" role="button">Add A Workout</a></p>
+</div>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.WorkoutDate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class="details-link" this-id="@item.ID">
+            <td>
+                @item.WorkoutDate.ToString("M/dd/yyyy")
+            </td>
+            <td>
+                Weight on Scale: @item.ScaleWeight |  
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>

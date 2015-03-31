@@ -1,17 +1,26 @@
 ﻿@model WorkingOut.Models.AddedExerciseViewModel
+@{
+    Html.ViewData.TemplateInfo.HtmlFieldPrefix = "Routine[" + Model.ExerciseIndex + "]";               
+}
 
     <div class="form-group grey_div" id="exercise_@Model.Exercise.ExerciseID.ToString()">
         <div class="col-md-2">
             <p class="set_added_name">@Model.ExerciseName</p>
-            @Html.HiddenFor(model => model.ExerciseName)
-            @Html.HiddenFor(model => model.Exercise.ExerciseID)
+            @Html.Hidden("ID", Model.Exercise.ID)
+            @Html.Hidden("ExerciseID", Model.Exercise.ExerciseID)
+            @Html.Hidden("WorkoutID", Model.Exercise.WorkoutID)
+            <input type="hidden" name="ExerciseID" value="@Model.Exercise.ExerciseID" />
         </div>
         <div class="col-md-10 set_rows">
             @{
+                int rownum = 0;
                 for (int i = 0; i < Model.Sets.Count(); i++)
                 {
-                    int rownum = 0;
-                    if((i+1) % 4 == 0){
+                    if(i % 4 == 0){
+                        if (i != 0)
+                        {
+            @:</div>                            
+                        }
                         rownum++;
                         string divId = Model.Exercise.ExerciseID.ToString() + "_row_" + rownum.ToString();
             @:<div class="form-group" id="@divId">
@@ -20,16 +29,25 @@
                     string divid = @Model.Exercise.ExerciseID.ToString() + "_set_" + i.ToString();
                 <div class="col-md-3" id="@divid">
                     <div class="set_added">
+                        @Html.HiddenFor(model => model.Sets[i].ID)
+                        @Html.HiddenFor(model => model.Sets[i].WorkoutExerciseID)
                         <h6 class="set_added_num">@(i+1)</h6>
                         <div class="display-inline set_added_info">
                             <p>@Model.Sets[i].Reps x @Model.Sets[i].Weight</p>
                         </div>
+                        <div class="display-inline set_added_input" style="display:none;">
+                            @Html.EditorFor(model => model.Sets[i].Reps)
+                            <span> x </span>
+                            @Html.EditorFor(model => model.Sets[i].Weight)
+                            <span> lb</span>
+                        </div>
                     </div>
                 </div>
-                    if((i+1) % 4 == 0){
-            @:</div>
-                    }
                }
+                if (rownum > 0)
+                {
+            @:</div>
+                }
             }
         </div>
     </div>

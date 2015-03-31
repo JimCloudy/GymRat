@@ -1,45 +1,45 @@
-﻿@model WorkingOut.Models.EditWorkoutViewModel
+﻿@model WorkingOut.Models.Workout
 
 @{
-    ViewBag.Title = "Edit Workout";
+    ViewBag.Title = "Add A Workout";
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
+
     <div class="row">
+        <div class="col-md-12">
+            <h4 class="inline-block">Add Workout</h4> | <h5 class="inline-block">@Model.WorkoutDate.ToLongDateString() <a>Change Date</a></h5>
+            @Html.HiddenFor(model => model.WorkoutDate)
+        </div>
+    </div>
+    
+    <div>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     </div>
 
-    <div class="row" id="date_div">
-        <div class="col-md-12">
-            @Html.Hidden("ID", Model.Workout.ID)
-            <h2 class="display-inline">Edit Workout</h2> | <h5 class="display-inline">@Model.Workout.WorkoutDate.ToLongDateString() <a>Change Date</a></h5>
-            @Html.Hidden("WorkoutDate" , Model.Workout.WorkoutDate)
-        </div>
-    </div>
-
-    <div class="form-horizontal grey_div">
+    <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-12">
-                <h4>@Model.Workout.WorkoutType</h4>
+                <h4>@Model.WorkoutType</h4>
             </div>
         </div>
 
         <div class="form-group workout_info">
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.Label("Duration", htmlAttributes: new { @class = "control-label col-md-6" })
+                    @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label col-md-6" })
                     <div class="col-md-6">
-                        @Html.EditorFor(model => model.Workout.Duration, null, "Duration", new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Workout.Duration, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.Label("ScaleWeight", htmlAttributes: new { @class = "control-label col-md-6" })
+                    @Html.LabelFor(model => model.ScaleWeight, htmlAttributes: new { @class = "control-label col-md-6" })
                     <div class="col-md-6">
-                        @Html.EditorFor(model => model.Workout.ScaleWeight, null, "ScaleWeight", new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Workout.ScaleWeight, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.ScaleWeight, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ScaleWeight, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -47,8 +47,9 @@
                 <div class="form-group">
                     <label class="col-md-12">Notes</label>
                     <div class="col-md-12">
-                        @Html.TextArea("Notes", Model.Workout.Notes, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Workout.Notes, "", new { @class = "text-danger" })
+                        <!--<textarea cols="50" rows="4" maxlength="256" class="form-control"></textarea>-->
+                        @Html.TextAreaFor(model => model.Notes, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -61,33 +62,41 @@
                         <h4>Add Exercises</h4>
                     </div>
                 </div>
-                <div class="form-group grey_div" id="exercise_entry">
+                <div class="form-group">
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="col-md-3">
                                 <h4>Workout Type</h4>
-                                @Html.DropDownList("ExerciseType", (IEnumerable<SelectListItem>)ViewBag.ExerciseTypes, htmlAttributes: new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Workout.WorkoutType, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-md-4">
-                                <h4 class="display-inline">Exercise</h4> | <h6 class="display-inline"><a>Add New</a></h6>
-                                @Html.DropDownList("ExerciseName", (IEnumerable<SelectListItem>)ViewBag.Exercises, htmlAttributes: new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Workout.WorkoutType, "", new { @class = "text-danger" })
+                                <h4 class="inline-block">Exercise</h4> | <h6 class="inline-block"><a>Add New</a></h6>
                             </div>
                             <div class="col-md-5">
                                 <h4>Weight Information</h4>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.DropDownList("ExerciseType", (IEnumerable<SelectListItem>)ViewBag.ExerciseTypes, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.WorkoutType, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.DropDownList("ExerciseName", (IEnumerable<SelectListItem>)ViewBag.Exercises, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.WorkoutType, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-5">
                                 <p class="form-control-static">There is no info for this item.</p>
                             </div>
                         </div>
-                        <div class="form-group" id="sets_entry">
+                        <div class="form-group">
                             <div class="col-md-3">
                                 <div class="set_entry">
                                     <h1 class="set_entry_num">10</h1>
-                                    <div class="display-inline set_entry_rep">
+                                    <div class="inline-block set_entry_rep">
                                         <h5>Reps</h5>
                                         <input size="3" class="set_entry_input" />
                                     </div>
-                                    <div class="display-inline set_entry_wt">
+                                    <div class="inline-block set_entry_wt">
                                         <h5>Weight</h5>
                                         <input size="3" class="set_entry_input" />
                                     </div>
@@ -96,11 +105,11 @@
                             <div class="col-md-3">
                                 <div class="set_entry">
                                     <h1 class="set_entry_num">1</h1>
-                                    <div class="display-inline set_entry_rep">
+                                    <div class="inline-block set_entry_rep">
                                         <h5>Reps</h5>
                                         <input size="3" class="set_entry_input" />
                                     </div>
-                                    <div class="display-inline set_entry_wt">
+                                    <div class="inline-block set_entry_wt">
                                         <h5>Weight</h5>
                                         <input size="3" class="set_entry_input" />
                                     </div>
@@ -109,11 +118,11 @@
                             <div class="col-md-3">
                                 <div class="set_entry">
                                     <h1 class="set_entry_num">1</h1>
-                                    <div class="display-inline set_entry_rep">
+                                    <div class="inline-block set_entry_rep">
                                         <h5>Reps</h5>
                                         <input size="3" class="set_entry_input" />
                                     </div>
-                                    <div class="display-inline set_entry_wt">
+                                    <div class="inline-block set_entry_wt">
                                         <h5>Weight</h5>
                                         <input size="3" class="set_entry_input" />
                                     </div>
@@ -122,11 +131,11 @@
                             <div class="col-md-3">
                                 <div class="set_entry">
                                     <h1 class="set_entry_num">1</h1>
-                                    <div class="display-inline set_entry_rep">
+                                    <div class="inline-block set_entry_rep">
                                         <h5>Reps</h5>
                                         <input size="3" class="set_entry_input" />
                                     </div>
-                                    <div class="display-inline set_entry_wt">
+                                    <div class="inline-block set_entry_wt">
                                         <h5>Weight</h5>
                                         <input size="3" class="set_entry_input" />
                                     </div>
@@ -135,33 +144,16 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-3">
-                                <input type="button" class="btn btn-primary" value="Add" id="addExercise" />
-                            </div>
+                                <input type="button" class="btn btn-primary" value="Add"  />
+                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <h4>Added Exercises</h4>
-                    </div>
-                </div>
-                <div id="addedExercises">
-                    @if (Model.AddedExercises.Count() > 0)
-                    {
-                        foreach(var addedExercise in Model.AddedExercises){
-                            Html.RenderPartial("WorkoutExercise", addedExercise);
-                        }
-                    }
-                    else
-                    {
-                        <div class="form-group grey_div" >
-                            <div class="col-md-12">
-                                <p>There are no exercises for this workout.</p>
-                            </div>
-                        </div>
-                    }
                 </div>
             </div>
+        </div>
+
+        <div id="routine">
+
         </div>
 
         <div class="form-group workout_info">
@@ -175,12 +167,18 @@
     </div>
 }
 
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/Routine")
-    @Scripts.Render("~/Scripts/Coded/CreateWorkout.js")
 }
 
 @section Styles{
     @Styles.Render("~/Content/Workout.css")
 }
+
