@@ -17,6 +17,26 @@
     
     populateRoutine();
 
+    $("#datepicker").datepicker();
+    $("#datepicker").on("changeDate", function (event) {
+        $("#WorkoutDate").val(
+            $("#datepicker").datepicker('getFormattedDate')
+            );
+        $("#datepicker").datepicker("hide");
+        SetWorkoutDateText($("#datepicker").datepicker('getFormattedDate'));
+    });
+
+    function SetWorkoutDateText(date) {
+        var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        var newDate = new Date(date);
+
+        var dateText = days[newDate.getDay()] + ", " + months[newDate.getMonth()] + " " + newDate.getDate() + ", " + newDate.getFullYear();
+
+        $("#workoutDateText").text(dateText);
+    }
+
 
     $("#addExercise").click(function (e) {
         e.preventDefault();

@@ -13,8 +13,8 @@
 
     <div class="row" id="date_div" >
         <div class="col-md-12">
-            <h2 class="display-inline">Add Workout</h2> | <h5 class="display-inline">@Model.WorkoutDate.ToLongDateString() <a>Change Date</a></h5>
-            @Html.HiddenFor(model => model.WorkoutDate)
+            <h2 class="display-inline">Add Workout</h2> | <h5 class="display-inline"><span id="workoutDateText">@Model.WorkoutDate.ToLongDateString()</span> <a id="datepicker" data-date="@Model.WorkoutDate.ToString("MM/dd/yyyy")">Change Date</a></h5>
+            @Html.Hidden("WorkoutDate", @Model.WorkoutDate.ToString("MM/dd/yyyy"))
         </div>
     </div>
         
@@ -166,9 +166,11 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/Routine")
     @Scripts.Render("~/Scripts/Coded/CreateWorkout.js")
+    @Scripts.Render("~/Scripts/bootstrap-datepicker.js")
 }
 
 @section Styles{
     @Styles.Render("~/Content/Workout.css")
+    @Styles.Render("~/Content/datepicker.css")
 }
 
