@@ -245,17 +245,44 @@ namespace WorkingOut.Controllers
 
             return PartialView("~/Views/Workout/EditorTemplates/WorkoutExercise.cshtml", w);
         }
-               
-        private IEnumerable<SelectListItem> PopulateExerciseList()
+
+        [HttpPost]
+        public ActionResult AddNewExercise(Exercise exercise)
         {
-            IEnumerable<Exercise> exercises = db.Exercises.ToList();
+            if (ModelState.IsValid)
+            {
+                db.Exercises.Add(exercise);
+
+                db.SaveChanges();
+
+                return Json(PopulateExerciseList(exercise.ID));
+            }
+
+            Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
+            List<string> errors = new List<string>();
+
+            errors.Add("There was an error while adding exercise, please try again.");
+
+            return Json(errors);
+        }
+               
+        private IEnumerable<SelectListItem> PopulateExerciseList(int selectID = 0)
+        {
+            IEnumerable<Exercise> exercises = db.Exercises.Where(n => n.Name != null).OrderBy(e => e.Name).ToList();
+
+            if (selectID == 0)
+            {
+                selectID = exercises.FirstOrDefault().ID;
+            }
 
             IEnumerable<SelectListItem> items =
                 from exercise in exercises
                 select new SelectListItem
                 {
                     Text = exercise.Name,
-                    Value = exercise.ID.ToString()
+                    Value = exercise.ID.ToString(),
+                    Selected = (exercise.ID == selectID)
                 };
 
             return items;

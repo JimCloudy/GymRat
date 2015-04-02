@@ -11,7 +11,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     </div>
 
-    <div class="row" id="date_div">
+    <div class="row darkHeadingDiv" id="date_div">
         <div class="col-md-12">
             @Html.Hidden("ID", Model.Workout.ID)
             <h2 class="display-inline">Edit Workout</h2> | <h5 class="display-inline"><span id="workoutDateText">@Model.Workout.WorkoutDate.ToLongDateString()</span> <a id="datepicker" data-date="@Model.Workout.WorkoutDate.ToString("MM/dd/yyyy")">Change Date</a></h5>
@@ -65,18 +65,51 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="col-md-3">
-                                <h4>Workout Type</h4>
+                                <h4>Exercise Type</h4>
                                 @Html.DropDownList("ExerciseType", (IEnumerable<SelectListItem>)ViewBag.ExerciseTypes, htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Workout.WorkoutType, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-md-4">
-                                <h4 class="display-inline">Exercise</h4> | <h6 class="display-inline"><a>Add New</a></h6>
+                                <h4 class="display-inline">Exercise</h4> | <h6 class="display-inline"><a id="addExerciseLink">Add New</a></h6>
                                 @Html.DropDownList("ExerciseName", (IEnumerable<SelectListItem>)ViewBag.Exercises, htmlAttributes: new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Workout.WorkoutType, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-md-5">
                                 <h4>Weight Information</h4>
                                 <p class="form-control-static">There is no info for this item.</p>
+                            </div>
+                        </div>
+                        <div class="form-group" id="showHideAddExercise">
+                            <div class="col-md-12">
+                                <div id="addExerciseDiv">
+                                    <div class="form-group darkHeadingDiv">
+                                        <div class="col-md-12">
+                                            <h5 class="display-inline">Add New Exercise</h5> | <p class="display-inline">Add new workout exercises that are missing from dropdown</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <h4>Exercise Type</h4>
+                                            @Html.DropDownList("AddExerciseType", (IEnumerable<SelectListItem>)ViewBag.ExerciseTypes, htmlAttributes: new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h4>Exercise</h4>
+                                            @Html.EditorFor(model => model.Exercise.Name, null, "AddExerciseName", new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                        <div class="col-md-5">
+                                            <h4>Weight Information</h4>
+                                            @Html.EditorFor(model => model.Exercise.WeightInfo, null, "AddExerciseWeight", new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <input type="button" value="Add Exercise" class="btn btn-success form-control" id="addExerciseSubmit"/>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="button" value="Cancel" class="btn btn-warning form-control" id="addExerciseCancel"/>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group" id="sets_entry">

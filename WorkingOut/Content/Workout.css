@@ -57,12 +57,12 @@ div.set_entry .set_entry_wt{
     padding-right:10px;
 }
 
-#exercise_entry .col-md-3{
+#sets_entry .col-md-3{
     padding-left:5px;
     padding-right:5px;
 }
 
-#date_div{
+.darkHeadingDiv{
     background-color: #555;
     border-radius: 10px;
     margin-left: 0px;
@@ -102,4 +102,19 @@ div.set_entry .set_entry_wt{
     padding-left: 5px;
     padding-right: 5px;
 }
+
+#addExerciseDiv{
+    border-radius: 5px;
+    border: 1px solid #ffd800;
+    background-color: #fff;
+}
+
+#addExerciseDiv .form-group{
+    margin: 5px;
+}
+
+#showHideAddExercise{
+    display: none;
+}
+
 

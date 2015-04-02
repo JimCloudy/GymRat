@@ -122,6 +122,41 @@
         clearAddExercise();
     });
 
+    $("#addExerciseLink").click(function (e) {
+        var selected = $("#ExerciseType option:selected").val();
+        var lookup = "#AddExerciseType option[value='" + selected + "']";
+        $(lookup).attr("selected", "selected");
+        $("#showHideAddExercise").show();
+    });
+
+    $("#addExerciseSubmit").click(function (e) {
+        var type = $("#AddExerciseType").val();
+        var name = $("#AddExerciseName").val();
+        var weightinfo = $("#AddExerciseWeight").val();
+
+        var url = window.location.protocol + "//" + window.location.host + "/Workout/AddNewExercise";
+
+        $.post(url, { ID: 0, Type: "Weight Training", Name: name, BodyPart: type, WeightInfo: weightinfo }, function (data) {
+            $("#ExerciseName").find("option").remove();
+            $.each(data, function(i, exercise){
+                var option = document.createElement("option");
+                $(option).val(exercise.Value);
+                $(option).text(exercise.Text);
+                if (exercise.Selected == true) {
+                    $(option).attr("selected", "selected");
+                }
+                $("#ExerciseName").append(option);
+            });
+            $("#AddExerciseName").val("");
+            $("#AddExerciseWeight").val("");
+            $("#showHideAddExercise").hide();
+        });
+    });
+
+    $("#addExerciseCancel").click(function (e) {
+        $("#showHideAddExercise").hide();
+    });
+
     //addSet(row number, exercise id, data for set)
     function addSet(row, exerciseID, setdata) {
         var routineIndex = findWorkoutExercise(exerciseID);

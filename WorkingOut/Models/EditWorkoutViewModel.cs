@@ -9,5 +9,6 @@ namespace WorkingOut.Models
     {
         public Workout Workout { get; set; }
         public List<AddedExerciseViewModel> AddedExercises { get; set; }
+        public Exercise Exercise { get; set; }
     }
 }
