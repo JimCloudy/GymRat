@@ -52,4 +52,3 @@ C:\Users\brent\Documents\c#_exercises\WorkingOut\WorkingOut\bin\Microsoft.Owin.S
 C:\Users\brent\Documents\c#_exercises\WorkingOut\WorkingOut\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\brent\Documents\c#_exercises\WorkingOut\WorkingOut\obj\Debug\WorkingOut.dll
 C:\Users\brent\Documents\c#_exercises\WorkingOut\WorkingOut\obj\Debug\WorkingOut.pdb
-C:\Users\brent\Documents\c#_exercises\WorkingOut\WorkingOut\obj\Debug\WorkingOut.csprojResolveAssemblyReference.cache

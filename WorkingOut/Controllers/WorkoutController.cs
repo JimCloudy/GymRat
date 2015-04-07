@@ -126,7 +126,7 @@ namespace WorkingOut.Controllers
                 model.AddedExercises.Add(addedExercise);
             }
 
-            ViewBag.Exercises = PopulateExerciseList();
+            model.ExerciseList = PopulateExerciseList();
             ViewBag.ExerciseTypes = PopulateTypeList();
 
             return View(model);
@@ -251,11 +251,15 @@ namespace WorkingOut.Controllers
         {
             if (ModelState.IsValid)
             {
+                exercise.User = "me";
+
                 db.Exercises.Add(exercise);
 
                 db.SaveChanges();
 
-                return Json(PopulateExerciseList(exercise.ID));
+                var json = new { exerciseList = PopulateExerciseList(), addedID = exercise.ID };
+
+                return Json(json);
             }
 
             Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -267,30 +271,29 @@ namespace WorkingOut.Controllers
             return Json(errors);
         }
                
-        private IEnumerable<SelectListItem> PopulateExerciseList(int selectID = 0)
+        private IEnumerable<Exercise> PopulateExerciseList()
         {
-            IEnumerable<Exercise> exercises = db.Exercises.Where(n => n.Name != null).OrderBy(e => e.Name).ToList();
+            IEnumerable<Exercise> exercises = db.Exercises.Where(n => n.Name != null && n.User == null).Union(db.Exercises.Where(n => n.Name != null && n.User == "me")).OrderBy(u => u.Name).ToList();
 
-            if (selectID == 0)
+            //List<SelectListItem> items = new List<SelectListItem>();
+                        
+            /*foreach (Exercise exercise in exercises)
             {
-                selectID = exercises.FirstOrDefault().ID;
-            }
-
-            IEnumerable<SelectListItem> items =
-                from exercise in exercises
-                select new SelectListItem
+                items.Add(new SelectListItem
                 {
                     Text = exercise.Name,
                     Value = exercise.ID.ToString(),
-                    Selected = (exercise.ID == selectID)
-                };
+                    Selected = (exercise.ID == selectID),
 
-            return items;
+                });
+            }*/
+
+            return exercises;
         }
 
         private IEnumerable<SelectListItem> PopulateTypeList()
         {
-            return new SelectList(new[] { "Abs", "Back", "Bicep", "Calves", "Chest", "Forearms", "Legs", "Other", "Shoulders", "Tricep" }.Select(x => new { value = x, text = x }), "value", "text"); 
+            return new SelectList(new[] { "Abs", "Back", "Biceps", "Calves", "Chest", "Forearms", "Legs", "Other", "Shoulders", "Triceps" }.Select(x => new { value = x, text = x }), "value", "text"); 
         }
     }
 }

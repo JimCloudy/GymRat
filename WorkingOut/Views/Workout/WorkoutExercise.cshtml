@@ -33,7 +33,7 @@
                         @Html.HiddenFor(model => model.Sets[i].WorkoutExerciseID)
                         <h6 class="set_added_num">@(i+1)</h6>
                         <div class="display-inline set_added_info">
-                            <p>@Model.Sets[i].Reps x @Model.Sets[i].Weight</p>
+                            <p>@Model.Sets[i].Reps x @Model.Sets[i].Weight lb</p>
                         </div>
                         <div class="display-inline set_added_input" style="display:none;">
                             @Html.EditorFor(model => model.Sets[i].Reps)
