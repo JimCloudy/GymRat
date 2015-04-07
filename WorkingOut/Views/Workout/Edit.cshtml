@@ -67,16 +67,15 @@
                             <div class="col-md-3">
                                 <h4>Exercise Type</h4>
                                 @Html.DropDownList("ExerciseType", (IEnumerable<SelectListItem>)ViewBag.ExerciseTypes, htmlAttributes: new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Workout.WorkoutType, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-md-4">
                                 <h4 class="display-inline">Exercise</h4> | <h6 class="display-inline"><a id="addExerciseLink">Add New</a></h6>
-                                @Html.DropDownList("ExerciseName", (IEnumerable<SelectListItem>)ViewBag.Exercises, htmlAttributes: new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Workout.WorkoutType, "", new { @class = "text-danger" })
+                                <select id="ExerciseName" name="ExerciseName" class="form-control"></select>
+                                <p class="text-danger" id="noexercises">No Exercises</p>
                             </div>
                             <div class="col-md-5">
                                 <h4>Weight Information</h4>
-                                <p class="form-control-static">There is no info for this item.</p>
+                                <p class="form-control-static" id="weightInfo"></p>
                             </div>
                         </div>
                         <div class="form-group" id="showHideAddExercise">
@@ -115,19 +114,6 @@
                         <div class="form-group" id="sets_entry">
                             <div class="col-md-3">
                                 <div class="set_entry">
-                                    <h1 class="set_entry_num">10</h1>
-                                    <div class="display-inline set_entry_rep">
-                                        <h5>Reps</h5>
-                                        <input size="3" class="set_entry_input" />
-                                    </div>
-                                    <div class="display-inline set_entry_wt">
-                                        <h5>Weight</h5>
-                                        <input size="3" class="set_entry_input" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="set_entry">
                                     <h1 class="set_entry_num">1</h1>
                                     <div class="display-inline set_entry_rep">
                                         <h5>Reps</h5>
@@ -141,7 +127,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="set_entry">
-                                    <h1 class="set_entry_num">1</h1>
+                                    <h1 class="set_entry_num">2</h1>
                                     <div class="display-inline set_entry_rep">
                                         <h5>Reps</h5>
                                         <input size="3" class="set_entry_input" />
@@ -154,7 +140,20 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="set_entry">
-                                    <h1 class="set_entry_num">1</h1>
+                                    <h1 class="set_entry_num">3</h1>
+                                    <div class="display-inline set_entry_rep">
+                                        <h5>Reps</h5>
+                                        <input size="3" class="set_entry_input" />
+                                    </div>
+                                    <div class="display-inline set_entry_wt">
+                                        <h5>Weight</h5>
+                                        <input size="3" class="set_entry_input" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="set_entry">
+                                    <h1 class="set_entry_num">4</h1>
                                     <div class="display-inline set_entry_rep">
                                         <h5>Reps</h5>
                                         <input size="3" class="set_entry_input" />
@@ -199,7 +198,7 @@
 
         <div class="form-group workout_info">
             <div class="col-md-3">
-                <input type="submit" value="Create Workout" class="btn btn-primary form-control" />
+                <input type="submit" value="Save Workout" class="btn btn-primary form-control" />
             </div>
             <div class="col-md-2">
                 <input type="button" value="Cancel" class="btn btn-danger form-control" />
@@ -207,6 +206,9 @@
         </div>
     </div>
 }
+<script>
+    var exerciseList = @Html.Raw(Json.Encode(Model.ExerciseList));
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

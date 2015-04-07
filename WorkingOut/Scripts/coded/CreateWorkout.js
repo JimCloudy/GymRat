@@ -14,10 +14,9 @@
         this.reps = r;
         this.weight = w;
     }
-    
-    populateRoutine();
 
     $("#datepicker").datepicker();
+
     $("#datepicker").on("changeDate", function (event) {
         $("#WorkoutDate").val(
             $("#datepicker").datepicker('getFormattedDate')
@@ -120,13 +119,23 @@
         }
 
         clearAddExercise();
+        populateSetNumbers();
     });
 
     $("#addExerciseLink").click(function (e) {
-        var selected = $("#ExerciseType option:selected").val();
-        var lookup = "#AddExerciseType option[value='" + selected + "']";
-        $(lookup).attr("selected", "selected");
-        $("#showHideAddExercise").show();
+        if ($("#showHideAddExercise").is(":visible")) {
+            $("#showHideAddExercise").hide();
+            $("#addExercise").prop("disabled", false);
+        }
+        else {
+            $("#AddExerciseName").val("");
+            $("#AddExerciseWeight").val("");
+            var selected = $("#ExerciseType option:selected").val();
+            var lookup = "#AddExerciseType option[value='" + selected + "']";
+            $(lookup).attr("selected", "selected");
+            $("#addExercise").prop("disabled", true);
+            $("#showHideAddExercise").show();
+        }        
     });
 
     $("#addExerciseSubmit").click(function (e) {
@@ -134,27 +143,39 @@
         var name = $("#AddExerciseName").val();
         var weightinfo = $("#AddExerciseWeight").val();
 
+        if (name.trim() == "") {
+            return;
+        }
+
         var url = window.location.protocol + "//" + window.location.host + "/Workout/AddNewExercise";
 
         $.post(url, { ID: 0, Type: "Weight Training", Name: name, BodyPart: type, WeightInfo: weightinfo }, function (data) {
-            $("#ExerciseName").find("option").remove();
-            $.each(data, function(i, exercise){
-                var option = document.createElement("option");
-                $(option).val(exercise.Value);
-                $(option).text(exercise.Text);
-                if (exercise.Selected == true) {
-                    $(option).attr("selected", "selected");
-                }
-                $("#ExerciseName").append(option);
-            });
+            exerciseList = data.exerciseList;
+            var lookup = "#ExerciseType option[value='" + type + "']";
+            $(lookup).attr("selected", "selected");
+            $("#ExerciseType").change();
+            var lookup = "#ExerciseName option[value='" + data.addedID + "']";
+            $(lookup).attr("selected", "selected");
+            $("#ExerciseName").change();
             $("#AddExerciseName").val("");
             $("#AddExerciseWeight").val("");
             $("#showHideAddExercise").hide();
+            $("#addExercise").prop("disabled", false);
         });
     });
 
     $("#addExerciseCancel").click(function (e) {
         $("#showHideAddExercise").hide();
+        $("#addExercise").prop("disabled", false);
+    });
+
+    $("#ExerciseType").change(function () {
+        populateExerciseList();
+    });
+
+    $("#ExerciseName").change(function () {
+        populateWeightInformation();
+        populateSetNumbers();
     });
 
     //addSet(row number, exercise id, data for set)
@@ -258,5 +279,69 @@
             var thisExercise = new workoutExercise(thisId, sets);
             routine.push(thisExercise);
         });
+
+        populateExerciseList();
     }
+
+    function populateExerciseList() {
+        var type = "";
+        if ($("#ExerciseType option:selected"))
+        {
+            type = $("#ExerciseType option:selected").val();
+        }
+        else {
+            type = $("#ExerciseType option:eq(0)").val();
+        }
+        
+        $("#ExerciseName").find("option").remove();
+
+        $.each(exerciseList, function (i, exercise) {
+            if (exercise.BodyPart == type) {
+                var option = document.createElement("option");
+                $(option).val(exercise.ID);
+                $(option).text(exercise.Name);
+                $("#ExerciseName").append(option);
+            }
+        });
+
+        if ($("#ExerciseName").find("option").length > 0) {
+            $("#noexercises").hide();
+            $("#ExerciseName").show();
+            $("#ExerciseName").change();
+            $("#addExercise").prop("disabled", false);
+        }
+        else {
+            $("#ExerciseName").hide();
+            $("#noexercises").show();
+            $("#weightInfo").text("");
+            populateSetNumbers();
+            $("#addExercise").prop("disabled", true);
+        }
+        
+    }
+
+    function populateWeightInformation()
+    {
+        var selected = $("#ExerciseName option:selected").val();
+        var text = "There is no info for this item";
+        $(exerciseList).each(function (index, exercise) {
+            if(exercise.ID == selected){
+                text = exercise.WeightInfo;
+            }
+        });
+
+        $("#weightInfo").text(text);
+    }
+
+    function populateSetNumbers() {
+        var id = $("#ExerciseName option:selected").val();
+        var index = findWorkoutExercise(id);
+        var numsets = routine[index].sets.length;
+        $(".set_entry_num").each(function (index){
+            numsets++;
+            $(this).text(numsets);
+        });
+    }
+
+    populateRoutine();
 });

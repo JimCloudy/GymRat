@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace WorkingOut.Models
 {
@@ -10,5 +11,6 @@ namespace WorkingOut.Models
         public Workout Workout { get; set; }
         public List<AddedExerciseViewModel> AddedExercises { get; set; }
         public Exercise Exercise { get; set; }
+        public IEnumerable<Exercise> ExerciseList { get; set; }
     }
 }
