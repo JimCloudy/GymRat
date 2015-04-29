@@ -75,6 +75,8 @@ div.set_entry .set_entry_wt{
     border: 1px solid #d8d8d8;
     border-radius:10px;
     background-color: #fff;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .set_added_num{
@@ -89,12 +91,17 @@ div.set_entry .set_entry_wt{
     border-radius:5px;
 }
 
+.set_added_info p{
+    margin: 0px 0px;
+}
+
 .set_added_input{
-    width:75%;
+    width:70%;
+    display: none;
 }
 
 .set_added_input input{
-    width: 30%;
+    width: 33%;
     border-radius:5px;
 }
 
@@ -117,4 +124,7 @@ div.set_entry .set_entry_wt{
     display: none;
 }
 
+.saveExEdit{
+    display: none;
+}
 

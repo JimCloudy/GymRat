@@ -6,10 +6,16 @@
     <div class="form-group grey_div" id="exercise_@Model.Exercise.ExerciseID.ToString()">
         <div class="col-md-2">
             <p class="set_added_name">@Model.ExerciseName</p>
+            <div class="editDeleteEx">
+                <h6 class="display-inline"><a class="edit_added" edit-id="@Model.Exercise.ExerciseID.ToString()">Edit</a></h6> <h6 class="display-inline"><a class="delete_added" delete-id="@Model.Exercise.ExerciseID.ToString()">Delete</a></h6>
+            </div>
+            <div class="saveExEdit">
+                <button type="button" class="btn btn-success btn-xs">Save Exercise</button> 
+            </div>
             @Html.Hidden("ID", Model.Exercise.ID)
-            @Html.Hidden("ExerciseID", Model.Exercise.ExerciseID)
+            @Html.Hidden("ExerciseID", Model.Exercise.ExerciseID, new { @class = "exercise_id" })
             @Html.Hidden("WorkoutID", Model.Exercise.WorkoutID)
-            <input type="hidden" name="ExerciseID" value="@Model.Exercise.ExerciseID" />
+            <input type="hidden" name="DeleteExercise" class="DeleteExercise"/>
         </div>
         <div class="col-md-10 set_rows">
             @{
@@ -35,10 +41,18 @@
                         <div class="display-inline set_added_info">
                             <p>@Model.Sets[i].Reps x @Model.Sets[i].Weight lb</p>
                         </div>
-                        <div class="display-inline set_added_input" style="display:none;">
-                            @Html.EditorFor(model => model.Sets[i].Reps)
+                        <div class="set_added_input">
+                            @{
+                    string inputName = Html.ViewData.TemplateInfo.HtmlFieldPrefix + ".Sets[" + i + "].Reps";
+                    string inputId = "Routine_" + Model.ExerciseIndex + "__Sets_" + i + "__Reps";
+                            }
+                            <input type="text" name="@inputName" id="@inputId" value="@Model.Sets[i].Reps"/>
                             <span> x </span>
-                            @Html.EditorFor(model => model.Sets[i].Weight)
+                            @{
+                    inputName = Html.ViewData.TemplateInfo.HtmlFieldPrefix + ".Sets[" + i + "].Weight";
+                    inputId = "Routine_" + Model.ExerciseIndex + "__Sets_" + i + "__Weight";
+                            }
+                            <input type="text" name="@inputName" id="@inputId" value="@Model.Sets[i].Weight" />
                             <span> lb</span>
                         </div>
                     </div>

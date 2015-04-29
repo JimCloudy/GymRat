@@ -88,14 +88,67 @@
             $(p).html($("#ExerciseName option:selected").text());
 
             //create element to hold id for passing to server
-            var routineIndex = findWorkoutExercise(exerciseID);
-            var input = document.createElement("input");
-            $(input).attr("type", "hidden");
-            $(input).attr("name", "Routine[" + routineIndex + "].ExerciseID");
-            $(input).val(exerciseID);
+            var routineIndex = routine.push(new workoutExercise(exerciseID, [])) - 1;
+            var inputId = document.createElement("input");
+            $(inputId).attr("type", "hidden");
+            $(inputId).attr("name", "Routine[" + routineIndex + "].ExerciseID");
+            $(inputId).addClass("exercise_id");
+            $(inputId).val(exerciseID);
 
+            //create element to hold value for deleting exercise
+            var inputDelete = document.createElement("input");
+            $(inputDelete).attr("type", "hidden");
+            $(inputDelete).attr("name", "DeleteExercise");
+            $(inputDelete).addClass("DeleteExercise");
+
+            //create div to hold edit and delete links
+            var editDeleteDiv = document.createElement("div");
+            $(editDeleteDiv).addClass("editDeleteEx");
+
+            var h6edit = document.createElement("h6");
+            $(h6edit).addClass("display-inline");
+
+            var editLink = document.createElement("a");
+            $(editLink).addClass("edit_added");
+            $(editLink).attr("edit-id", exerciseID);
+            $(editLink).text("Edit");
+            $(editLink).on("click", editAddedExercise);
+
+            $(h6edit).append(editLink);
+
+            var h6delete = document.createElement("h6");
+            $(h6delete).addClass("display-inline");
+
+            var deleteLink = document.createElement("a");
+            $(deleteLink).addClass("delete_added");
+            $(deleteLink).attr("delete-id", exerciseID);
+            $(deleteLink).text("Delete");
+            $(deleteLink).on("click", deleteAddedExercise);
+
+            $(h6delete).append(deleteLink);
+
+            $(editDeleteDiv).append(h6edit);
+            $(editDeleteDiv).append("&nbsp;");
+            $(editDeleteDiv).append(h6delete);
+
+            //create div to hold save exercise button
+            var saveExDiv = document.createElement("div");
+            $(saveExDiv).addClass("saveExEdit");
+
+            var button = document.createElement("button");
+            $(button).attr("type", "button");
+            $(button).addClass("btn btn-success btn-xs");
+            $(button).text("Save Exercise");
+            
+            $(saveExDiv).append(button);
+            $(saveExDiv).css("display", "none");
+            $(saveExDiv).on("click", saveExerciseEdit);
+            
             $(exerciseName).append(p);
-            $(exerciseName).append(input);
+            $(exerciseName).append(inputId);
+            $(exerciseName).append(inputDelete);
+            $(exerciseName).append(editDeleteDiv);
+            $(exerciseName).append(saveExDiv);
 
             $(exerciseDiv).append(exerciseName);
 
@@ -178,6 +231,18 @@
         populateSetNumbers();
     });
 
+    $(".delete_added").each(function (index) {
+        $(this).on("click", deleteAddedExercise);
+    });
+
+    $(".edit_added").each(function (index) {
+        $(this).on("click", editAddedExercise);
+    });
+
+    $(".saveExEdit").each(function (index) {
+        $(this).on("click", saveExerciseEdit);
+    });
+
     //addSet(row number, exercise id, data for set)
     function addSet(row, exerciseID, setdata) {
         var routineIndex = findWorkoutExercise(exerciseID);
@@ -250,9 +315,7 @@
                 i = routine.length;
             }
         }
-        if (index == -1) {
-            index = routine.push(new workoutExercise(id, [])) - 1;
-        }
+        
         return index;
     }
 
@@ -268,7 +331,7 @@
     }
 
     function populateRoutine() {
-        $("input[name='ExerciseID']").each(function (index) {
+        $(".exercise_id").each(function (index) {
             var thisId = $(this).val();
             var exerciseDiv = "#exercise_" + thisId;
             var sets = [];
@@ -336,11 +399,51 @@
     function populateSetNumbers() {
         var id = $("#ExerciseName option:selected").val();
         var index = findWorkoutExercise(id);
-        var numsets = routine[index].sets.length;
+        var numsets = (index == -1) ? 0 : routine[index].sets.length;
+        
         $(".set_entry_num").each(function (index){
             numsets++;
             $(this).text(numsets);
         });
+    }
+
+    function saveExerciseEdit() {
+        var exId = $(this).siblings(".exercise_id").eq(0).val();
+        var set_added_info = "#exercise_" + exId + " .set_added_info";
+        var set_added_input = "#exercise_" + exId + " .set_added_input";
+        $(set_added_input).each(function (index) {
+            var reps = $(this).children("input").eq(0).val();
+            var weight = $(this).children("input").eq(1).val();
+            $(set_added_info).eq(index).children().eq(0).text(reps + " x " + weight + " lb");
+        });
+        var lookup = "#exercise_" + exId + " .saveExEdit";
+        $(lookup).hide();
+        var lookup = "#exercise_" + exId + " .editDeleteEx";
+        $(lookup).show();
+        $(set_added_input).hide();
+        $(set_added_info).show();
+        if ($(".saveExEdit:visible").length == 0) {
+            $("#saveWorkout").prop("disabled", false);
+        }
+    }
+
+    function deleteAddedExercise() {
+        var lookup = "#exercise_" + $(this).attr("delete-id");
+        $(lookup).hide();
+        var hidden = lookup + " .DeleteExercise";
+        $(hidden).val("true");
+    }
+
+    function editAddedExercise() {
+        var lookup = "#exercise_" + $(this).attr("edit-id") + " .set_added_info";
+        $(lookup).hide();
+        var lookup = "#exercise_" + $(this).attr("edit-id") + " .set_added_input";
+        $(lookup).css("display", "inline-block");
+        var lookup = "#exercise_" + $(this).attr("edit-id") + " .editDeleteEx";
+        $(lookup).hide();
+        var lookup = "#exercise_" + $(this).attr("edit-id") + " .saveExEdit";
+        $(lookup).show();
+        $("#saveWorkout").prop("disabled", true);
     }
 
     populateRoutine();
