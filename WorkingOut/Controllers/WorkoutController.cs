@@ -137,22 +137,21 @@ namespace WorkingOut.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Workout workout)
+        public ActionResult Edit(Workout workout, String[] DeleteExercise)
         {
             if (ModelState.IsValid)
             {
+                int index = 0;
                 foreach (var exercise in workout.Routine.ToList())
                 {
-                    bool temp = false;
-                    //if (exercise.DeleteExercise == true)
-                    if(temp)
+                    if (DeleteExercise[index] == "true")
                     {
-                        //workout.Routine.Remove(exercise);
                         if (exercise.ID != 0)
                         {
                             WorkoutExercise w = db.WorkoutExercises.Where(x => x.ID == exercise.ID && x.WorkoutID == exercise.WorkoutID).Single();
                             db.WorkoutExercises.Remove(w);
                         }
+                        workout.Routine.Remove(exercise);
                     }
                     else
                     {
@@ -185,6 +184,7 @@ namespace WorkingOut.Controllers
                             db.Entry(exercise).State = EntityState.Modified;
                         }
                     }
+                    index++;
                 }
 
                 db.Entry(workout).State = EntityState.Modified;
