@@ -6,11 +6,11 @@ using System.Web.Mvc;
 
 namespace WorkingOut.Models
 {
-    public class EditWorkoutViewModel
+    public class WorkoutViewModel
     {
         public Workout Workout { get; set; }
         public List<AddedExerciseViewModel> AddedExercises { get; set; }
-        public Exercise Exercise { get; set; }
         public IEnumerable<Exercise> ExerciseList { get; set; }
+        public Exercise Exercise { get; set; }
     }
 }

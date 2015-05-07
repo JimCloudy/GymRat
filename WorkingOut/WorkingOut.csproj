@@ -168,7 +168,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\EditWorkoutViewModel.cs" />
+    <Compile Include="Models\WorkoutViewModel.cs" />
     <Compile Include="Models\Exercise.cs" />
     <Compile Include="Models\HtmlHelpers\HtmlHelpers.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -195,10 +195,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\coded\EditRoutine.js" />
-    <Content Include="Scripts\coded\NewRoutine.js" />
     <Content Include="Scripts\coded\WorkoutIndex.js" />
-    <Content Include="Scripts\coded\CreateWorkout.js" />
+    <Content Include="Scripts\coded\Workout.js" />
     <Content Include="Scripts\ie-10-viewport-bug-workaround.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -312,14 +310,10 @@
     <Content Include="Views\Workout\Details.cshtml" />
     <Content Include="Views\Workout\Edit.cshtml" />
     <Content Include="Views\Workout\Index.cshtml" />
-    <Content Include="Views\Workout\EditorTemplates\WorkoutExercise.cshtml" />
-    <Content Include="Views\Workout\_WorkoutExercise.cshtml" />
+    <Content Include="Views\Workout\EditorTemplates\WorkoutExercise-2.cshtml" />
     <Content Include="Views\Workout\DisplayTemplates\WorkoutExercise.cshtml" />
-    <Content Include="Views\Workout\_NoWorkouts.cshtml" />
-    <Content Include="Views\Workout\_Workouts.cshtml" />
-    <Content Include="Views\Workout\Create - Copy.cshtml" />
-    <Content Include="Views\Workout\_Set.cshtml" />
-    <Content Include="Views\Workout\WorkoutExercise.cshtml" />
+    <Content Include="Views\Workout\_WorkoutExercise.cshtml" />
+    <Content Include="Views\Workout\Workout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

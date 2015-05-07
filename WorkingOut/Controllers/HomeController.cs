@@ -10,20 +10,19 @@ namespace WorkingOut.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.HomeTab = "active";
             return View();
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
+            ViewBag.AboutTab = "active";
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
+            ViewBag.ContactTab = "active";
             return View();
         }
     }

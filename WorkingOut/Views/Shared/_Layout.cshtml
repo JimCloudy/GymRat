@@ -15,11 +15,11 @@
       <div class="header">
         <nav>
           <ul class="nav nav-pills pull-right">
-              <li role="presentation" class="active"><a href="#">Home</a></li>
-              <li role="presentation"><a href="#">About</a></li>
-              <li role="presentation"><a href="#">Contact</a></li>
-              <li role="presentation"><a href="#">Sign In</a></li>
-              <li role="presentation">@Html.ActionLink("My Workouts","Index","Workout")</li>
+              <li role="presentation" class="@ViewBag.HomeTab">@Html.ActionLink("Home", "Index", "Home")</li>
+              <li role="presentation" class="@ViewBag.AboutTab">@Html.ActionLink("About", "About", "Home")</li>
+              <li role="presentation" class="@ViewBag.ContactTab">@Html.ActionLink("Contact", "Contact", "Home")</li>
+              <!--<li role="presentation"><a href="#">Sign In</a></li>-->
+              <li role="presentation" class="@ViewBag.WorkoutsTab">@Html.ActionLink("My Workouts", "Index", "Workout")</li>
           </ul>
         </nav>
         <h3 class="text-muted">Gym Rat</h3>

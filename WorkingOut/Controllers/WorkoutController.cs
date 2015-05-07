@@ -18,6 +18,7 @@ namespace WorkingOut.Controllers
         // GET: Workout
         public ActionResult Index()
         {
+            ViewBag.WorkoutsTab = "active";
             return View(db.Workouts.ToList());
         }
 
@@ -42,14 +43,20 @@ namespace WorkingOut.Controllers
         // GET: Workout/Create
         public ActionResult Create()
         {
+            WorkoutViewModel model = new WorkoutViewModel();
+            model.AddedExercises = new List<AddedExerciseViewModel>();
+            
             Workout workout = new Workout();
             workout.WorkoutDate = DateTime.Now;
             workout.WorkoutType = "Weight Lifting";
-            
-            ViewBag.Exercises = PopulateExerciseList();
-            ViewBag.ExerciseTypes = PopulateTypeList();
 
-            return View(workout);
+            model.Workout = workout;
+            model.ExerciseList = PopulateExerciseList();
+
+            ViewBag.ExerciseTypes = PopulateTypeList();
+            ViewBag.Title = "Create Workout";
+
+            return View("Workout", model);
         }
 
         // POST: Workout/Create
@@ -57,7 +64,7 @@ namespace WorkingOut.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Workout workout)
+        public ActionResult Create(Workout workout, String[] DeleteExercise)
         {
             if (ModelState.IsValid)
             {
@@ -69,17 +76,23 @@ namespace WorkingOut.Controllers
                 w.Notes = workout.Notes;
                 db.Workouts.Add(w);
 
+                int index = 0;
                 foreach (WorkoutExercise exercise in workout.Routine.ToList())
                 {
-                    exercise.WorkoutID = w.ID;
-                    db.WorkoutExercises.Add(exercise);
-
-                    foreach (Set set in exercise.Sets.ToList())
+                    if (DeleteExercise[index] != "true")
                     {
-                        set.WorkoutExerciseID = exercise.ID;
-                        db.Sets.Add(set);
+                        exercise.WorkoutID = w.ID;
+                        db.WorkoutExercises.Add(exercise);
+
+                        foreach (Set set in exercise.Sets.ToList())
+                        {
+                            set.WorkoutExerciseID = exercise.ID;
+                            db.Sets.Add(set);
+                        }
                     }
+                    index++;
                 }
+
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -104,7 +117,7 @@ namespace WorkingOut.Controllers
                 return HttpNotFound();
             }
 
-            EditWorkoutViewModel model = new EditWorkoutViewModel();
+            WorkoutViewModel model = new WorkoutViewModel();
             model.AddedExercises = new List<AddedExerciseViewModel>();
 
             model.Workout = workout;
@@ -128,8 +141,9 @@ namespace WorkingOut.Controllers
 
             model.ExerciseList = PopulateExerciseList();
             ViewBag.ExerciseTypes = PopulateTypeList();
+            ViewBag.Title = "Edit Workout";
 
-            return View(model);
+            return View("Workout", model);
         }
 
         // POST: Workout/Edit/5
