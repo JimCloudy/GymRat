@@ -1,8 +1,4 @@
-﻿@model WorkingOut.Models.EditWorkoutViewModel
-
-@{
-    ViewBag.Title = "Edit Workout";
-}
+﻿@model WorkingOut.Models.WorkoutViewModel
 
 @using (Html.BeginForm())
 {
@@ -71,7 +67,7 @@
                             <div class="col-md-4">
                                 <h4 class="display-inline">Exercise</h4> | <h6 class="display-inline"><a id="addExerciseLink">Add New</a></h6>
                                 <select id="ExerciseName" name="ExerciseName" class="form-control"></select>
-                                <p class="text-danger" id="noexercises">No Exercises</p>
+                                <p class="text-danger" id="noExercises">No Exercises</p>
                             </div>
                             <div class="col-md-5">
                                 <h4>Weight Information</h4>
@@ -178,19 +174,16 @@
                     </div>
                 </div>
                 <div id="addedExercises">
+                    <div class="form-group grey_div" id="noAddedExercises">
+                        <div class="col-md-12">
+                            <p>There are no exercises for this workout.</p>
+                        </div>
+                    </div>
                     @if (Model.AddedExercises.Count() > 0)
                     {
                         foreach(var addedExercise in Model.AddedExercises){
-                            Html.RenderPartial("WorkoutExercise", addedExercise);
+                            Html.RenderPartial("_WorkoutExercise", addedExercise);
                         }
-                    }
-                    else
-                    {
-                        <div class="form-group grey_div" >
-                            <div class="col-md-12">
-                                <p>There are no exercises for this workout.</p>
-                            </div>
-                        </div>
                     }
                 </div>
             </div>
@@ -201,7 +194,7 @@
                 <input type="submit" id="saveWorkout" value="Save Workout" class="btn btn-primary form-control" />
             </div>
             <div class="col-md-2">
-                <input type="button" value="Cancel" class="btn btn-danger form-control" />
+                <input type="button" value="Cancel" id="cancelWorkout" class="btn btn-danger form-control" />
             </div>
         </div>
     </div>
@@ -213,7 +206,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/Routine")
-    @Scripts.Render("~/Scripts/Coded/CreateWorkout.js")
+    @Scripts.Render("~/Scripts/Coded/Workout.js")
     @Scripts.Render("~/Scripts/bootstrap-datepicker.js")
 }
 

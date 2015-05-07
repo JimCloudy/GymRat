@@ -128,3 +128,11 @@ div.set_entry .set_entry_wt{
     display: none;
 }
 
+#noExercises{
+    display: none;
+}
+
+#noAddedExercises{
+    display: none;
+}
+

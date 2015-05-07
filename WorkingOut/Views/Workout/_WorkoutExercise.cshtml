@@ -1,53 +1,67 @@
-﻿@model WorkingOut.Models.WorkoutExercise
-
+﻿@model WorkingOut.Models.AddedExerciseViewModel
 @{
-    var newExercise = Model.ID == 0 ? "newexercise" : "";
+    Html.ViewData.TemplateInfo.HtmlFieldPrefix = "Routine[" + Model.ExerciseIndex + "]";               
 }
 
-    <div class="workoutExercises @newExercise">
-
-        @Html.HiddenFor(model => model.ID)
-        
-        @Html.HiddenFor(model => model.WorkoutID)
-                        
-        <div class="form-group">
-            @Html.LabelFor(model => model.ExerciseID, "ExerciseID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ExerciseID",(IEnumerable<SelectListItem>)ViewBag.Exercises, htmlAttributes: new { @class = "form-control"})
-                @Html.ValidationMessageFor(model => model.ExerciseID, "", new { @class = "text-danger" })
+    <div class="form-group grey_div added_exercises" id="exercise_@Model.Exercise.ExerciseID.ToString()">
+        <div class="col-md-2">
+            <p class="set_added_name">@Model.ExerciseName</p>
+            <div class="editDeleteEx">
+                <h6 class="display-inline"><a class="edit_added" edit-id="@Model.Exercise.ExerciseID.ToString()">Edit</a></h6> <h6 class="display-inline"><a class="delete_added" delete-id="@Model.Exercise.ExerciseID.ToString()">Delete</a></h6>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Sets, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Sets, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Sets, "", new { @class = "text-danger" })
+            <div class="saveExEdit">
+                <button type="button" class="btn btn-success btn-xs">Save Exercise</button> 
             </div>
+            @Html.Hidden("ID", Model.Exercise.ID)
+            @Html.Hidden("ExerciseID", Model.Exercise.ExerciseID, new { @class = "exercise_id" })
+            @Html.Hidden("WorkoutID", Model.Exercise.WorkoutID)
+            <input type="hidden" name="DeleteExercise" class="DeleteExercise"/>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Reps, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Reps, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Reps, "", new { @class = "text-danger" })
-            </div>
+        <div class="col-md-10 set_rows">
+            @{
+                int rownum = 0;
+                for (int i = 0; i < Model.Sets.Count(); i++)
+                {
+                    if(i % 4 == 0){
+                        if (i != 0)
+                        {
+            @:</div>                            
+                        }
+                        rownum++;
+                        string divId = Model.Exercise.ExerciseID.ToString() + "_row_" + rownum.ToString();
+            @:<div class="form-group" id="@divId">
+                    }
+                    //Html.RenderPartial("_Set",Model.Sets[i],partialViewData);
+                    string divid = @Model.Exercise.ExerciseID.ToString() + "_set_" + i.ToString();
+                <div class="col-md-3" id="@divid">
+                    <div class="set_added">
+                        @Html.HiddenFor(model => model.Sets[i].ID)
+                        @Html.HiddenFor(model => model.Sets[i].WorkoutExerciseID)
+                        <h6 class="set_added_num">@(i+1)</h6>
+                        <div class="display-inline set_added_info">
+                            <p>@Model.Sets[i].Reps x @Model.Sets[i].Weight lb</p>
+                        </div>
+                        <div class="set_added_input">
+                            @{
+                    string inputName = Html.ViewData.TemplateInfo.HtmlFieldPrefix + ".Sets[" + i + "].Reps";
+                    string inputId = "Routine_" + Model.ExerciseIndex + "__Sets_" + i + "__Reps";
+                            }
+                            <input type="text" name="@inputName" id="@inputId" value="@Model.Sets[i].Reps"/>
+                            <span> x </span>
+                            @{
+                    inputName = Html.ViewData.TemplateInfo.HtmlFieldPrefix + ".Sets[" + i + "].Weight";
+                    inputId = "Routine_" + Model.ExerciseIndex + "__Sets_" + i + "__Weight";
+                            }
+                            <input type="text" name="@inputName" id="@inputId" value="@Model.Sets[i].Weight" />
+                            <span> lb</span>
+                        </div>
+                    </div>
+                </div>
+               }
+                if (rownum > 0)
+                {
+            @:</div>
+                }
+            }
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <input type="hidden" name="deleteExercise" class="deleteExercise" value="false" />
-
-        <div class="form-group">
-            <div class="col-md-offset-6">
-                <button type="button" class="btn btn-primary btn-lg btnRmv">Remove Exercise From Routine</button>
-            </div>
-        </div>
-
     </div>

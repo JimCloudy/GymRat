@@ -7,6 +7,7 @@
     function workoutExercise(id, s) {
         this.exerciseID = id;
         this.sets = s;
+        this.delete = false;
     }
 
     //set(reps, weight)
@@ -75,7 +76,7 @@
         else {
             //create main exercise div
             var exerciseDiv = document.createElement("div");
-            $(exerciseDiv).addClass("form-group grey_div");
+            $(exerciseDiv).addClass("form-group grey_div added_exercises");
             $(exerciseDiv).attr("id", "exercise_" + exerciseID);
             
             //create div to hold name of exercise and edit delete links
@@ -173,6 +174,7 @@
 
         clearAddExercise();
         populateSetNumbers();
+        showHideNoAddedExercises();
     });
 
     $("#addExerciseLink").click(function (e) {
@@ -243,6 +245,10 @@
         $(this).on("click", saveExerciseEdit);
     });
 
+    $("#cancelWorkout").click(function (e) {
+        window.location.href = window.location.protocol + "//" + window.location.host + "/Workout";
+    });
+
     //addSet(row number, exercise id, data for set)
     function addSet(row, exerciseID, setdata) {
         var routineIndex = findWorkoutExercise(exerciseID);
@@ -310,7 +316,7 @@
     function findWorkoutExercise(id) {
         var index = -1;
         for (var i = 0; i < routine.length; i++) {
-            if (routine[i].exerciseID == id) {
+            if (routine[i].exerciseID == id && routine[i].delete != true) {
                 index = i;
                 i = routine.length;
             }
@@ -428,10 +434,18 @@
     }
 
     function deleteAddedExercise() {
-        var lookup = "#exercise_" + $(this).attr("delete-id");
+        var id = $(this).attr("delete-id");
+        var lookup = "#exercise_" + id;
         $(lookup).hide();
         var hidden = lookup + " .DeleteExercise";
         $(hidden).val("true");
+        var index = findWorkoutExercise(id);
+        if (index != -1) {
+            routine[index].delete = true;
+        }
+        $(lookup).removeAttr("id");
+        showHideNoAddedExercises();
+        populateSetNumbers()
     }
 
     function editAddedExercise() {
@@ -446,5 +460,16 @@
         $("#saveWorkout").prop("disabled", true);
     }
 
+    function showHideNoAddedExercises() {
+        if ($(".added_exercises:visible").length > 0) {
+            $("#noAddedExercises").hide();
+        }
+        else {
+            $("#noAddedExercises").show();
+        }
+    }
+
     populateRoutine();
+
+    showHideNoAddedExercises();
 });
