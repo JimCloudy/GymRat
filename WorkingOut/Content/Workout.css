@@ -1,6 +1,8 @@
 ﻿.grey_div {
     border: 10px solid #f0f0f0;
     background-color: #f0f0f0; 
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
     border-radius: 10px;
 }
 
@@ -16,7 +18,9 @@ div.form-horizontal .form-group {
 
 div.set_entry{
     border: 1px solid #d8d8d8;
-    border-radius:10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
     background-color: #fff;
 }
 
@@ -29,7 +33,9 @@ div.set_entry .set_entry_num{
     text-align:center;
     color: #fff;
     background-color: #f0f0f0;
-    border-radius:5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 div.set_entry .set_entry_rep{
@@ -37,7 +43,9 @@ div.set_entry .set_entry_rep{
 }
 
 div.set_entry .set_entry_input{
-    border-radius:5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
     width:100%;
 }
 
@@ -48,6 +56,8 @@ div.set_entry .set_entry_wt{
 .workout_info{
     background-color: #fff;
     border: 1px solid #f0f0f0;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
     border-radius: 10px;
     padding: 5px;
 }
@@ -64,6 +74,8 @@ div.set_entry .set_entry_wt{
 
 .darkHeadingDiv{
     background-color: #555;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
     border-radius: 10px;
     margin-left: 0px;
     margin-right: 0px;
@@ -73,7 +85,9 @@ div.set_entry .set_entry_wt{
 
 .set_added{
     border: 1px solid #d8d8d8;
-    border-radius:10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
     background-color: #fff;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -88,7 +102,9 @@ div.set_entry .set_entry_wt{
     text-align:center;
     color: #fff;
     background-color: #f0f0f0;
-    border-radius:5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 .set_added_info p{
@@ -102,7 +118,9 @@ div.set_entry .set_entry_wt{
 
 .set_added_input input{
     width: 33%;
-    border-radius:5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 .set_rows .col-md-3{
@@ -111,6 +129,8 @@ div.set_entry .set_entry_wt{
 }
 
 #addExerciseDiv{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
     border-radius: 5px;
     border: 1px solid #ffd800;
     background-color: #fff;

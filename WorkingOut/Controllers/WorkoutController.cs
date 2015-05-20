@@ -16,10 +16,53 @@ namespace WorkingOut.Controllers
         private WorkoutContext db = new WorkoutContext();
 
         // GET: Workout
-        public ActionResult Index()
+        public ActionResult Index(int? year, int? month)
         {
             ViewBag.WorkoutsTab = "active";
-            return View(db.Workouts.ToList());
+
+            Dictionary<DateTime, List<Workout>> workouts = db.Workouts.Include("Routine").Include("Routine.Exercise").GroupBy(w => w.WorkoutDate).ToDictionary(g => g.Key, g => g.ToList());
+
+            Dictionary<string, IEnumerable<CalendarViewModel>> model = new Dictionary<string, IEnumerable<CalendarViewModel>>();
+
+            List<CalendarViewModel> valueEnum = new List<CalendarViewModel>();
+                
+            foreach(var group in workouts){
+                foreach(Workout w in group.Value){
+                    CalendarViewModel calendarViewModel = new CalendarViewModel();
+                    calendarViewModel.workoutDate = w.WorkoutDate.ToShortDateString();
+                    calendarViewModel.workoutID = w.ID;
+                    calendarViewModel.workoutNotes = w.Notes;
+                    calendarViewModel.workoutWeight = w.ScaleWeight;
+                    calendarViewModel.workoutExercises = w.Routine.Count;
+                    calendarViewModel.workoutMuscleGroups = w.Routine.Select(e => e.Exercise.BodyPart).Distinct().ToArray();
+                    calendarViewModel.workoutLength = w.Duration;
+                    valueEnum.Add(calendarViewModel);
+                }
+                string keyDate = (string)group.Key.ToShortDateString();
+                model.Add(keyDate, valueEnum);
+                valueEnum = new List<CalendarViewModel>();
+            }
+
+            DateTime gotoDate = new DateTime();
+
+            if (year != null && month != null) {
+                //gotoDate = new DateTime((int)year, (int)month, 1);
+                gotoDate = DateTime.Now;
+            }
+            else
+            {
+                gotoDate = DateTime.Now;
+            }
+
+            ViewBag.Months = 
+                new List<SelectListItem>(new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }.Select((x,i) => 
+                new SelectListItem{
+                    Text = x,
+                    Value = i.ToString(),
+                    Selected = (gotoDate.Month - 1 == i)
+                }));
+
+            return View(model);
         }
 
         // GET: Workout/Details/5
@@ -40,14 +83,20 @@ namespace WorkingOut.Controllers
             return View(workout);
         }
 
-        // GET: Workout/Create
-        public ActionResult Create()
+        public ActionResult Create(int? year, int? month, int? day)
         {
             WorkoutViewModel model = new WorkoutViewModel();
             model.AddedExercises = new List<AddedExerciseViewModel>();
-            
+
             Workout workout = new Workout();
-            workout.WorkoutDate = DateTime.Now;
+            if (year != null && month != null && day != null)
+            {
+                workout.WorkoutDate = new DateTime((int)year,(int)month,(int)day);
+            }
+            else
+            {
+                workout.WorkoutDate = DateTime.Now;
+            }
             workout.WorkoutType = "Weight Lifting";
 
             model.Workout = workout;
@@ -84,10 +133,13 @@ namespace WorkingOut.Controllers
                         exercise.WorkoutID = w.ID;
                         db.WorkoutExercises.Add(exercise);
 
-                        foreach (Set set in exercise.Sets.ToList())
+                        if (exercise.Sets != null)
                         {
-                            set.WorkoutExerciseID = exercise.ID;
-                            db.Sets.Add(set);
+                            foreach (Set set in exercise.Sets.ToList())
+                            {
+                                set.WorkoutExerciseID = exercise.ID;
+                                db.Sets.Add(set);
+                            }
                         }
                     }
                     index++;
@@ -207,7 +259,7 @@ namespace WorkingOut.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(workout);
+            return View("Workout", workout);
         }
 
         // GET: Workout/Delete/5
