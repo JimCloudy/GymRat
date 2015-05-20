@@ -59,6 +59,13 @@
             var exerciseDiv = $(lookup);
             var setRows = exerciseDiv.find(".set_rows:eq(0)");
             var lastRowNum = setRows.find(".form-group").length;
+            if (lastRowNum == 0) {
+                var row = document.createElement("div");
+                $(row).addClass("form-group");
+                $(row).attr("id", exerciseID + "_row_1");
+                $(setRows).append(row);
+                lastRowNum = 1;
+            }
             var lookup = "#" + exerciseID + "_row_" + lastRowNum;
             var row = $(lookup);
             var rowSets = row.find(".col-md-3").length;
