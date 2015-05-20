@@ -226,24 +226,30 @@ namespace WorkingOut.Controllers
                             exercise.WorkoutID = workout.ID;
                             db.WorkoutExercises.Add(exercise);
 
-                            foreach (Set set in exercise.Sets.ToList())
+                            if (exercise.Sets != null)
                             {
-                                set.WorkoutExerciseID = exercise.ID;
-                                db.Sets.Add(set);
-                            }
-                        }
-                        else
-                        {                            
-                            foreach (Set set in exercise.Sets.ToList())
-                            {
-                                if (set.ID == 0)
+                                foreach (Set set in exercise.Sets.ToList())
                                 {
                                     set.WorkoutExerciseID = exercise.ID;
                                     db.Sets.Add(set);
                                 }
-                                else
+                            }
+                        }
+                        else
+                        {
+                            if (exercise.Sets != null)
+                            {
+                                foreach (Set set in exercise.Sets.ToList())
                                 {
-                                    db.Entry(set).State = EntityState.Modified;
+                                    if (set.ID == 0)
+                                    {
+                                        set.WorkoutExerciseID = exercise.ID;
+                                        db.Sets.Add(set);
+                                    }
+                                    else
+                                    {
+                                        db.Entry(set).State = EntityState.Modified;
+                                    }
                                 }
                             }
 
