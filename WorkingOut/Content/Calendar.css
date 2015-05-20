@@ -71,6 +71,9 @@ tbody td{
      box-shadow: 0 0 5px rgba(66, 139, 202, 1);
     -webkit-box-shadow: 0 0 5px rgba(66, 139, 202, 1); 
     -moz-box-shadow: 0 0 5px rgba(66, 139, 202, 1);
+}
+
+.dayInfo p:hover{
     cursor: pointer;
 }
 
@@ -140,7 +143,7 @@ tbody td{
 
 #select_month, #select_year{
     display:inline-block;
-    width:40%;
+    width:auto;
     height: 30px;
 }
 
@@ -157,3 +160,92 @@ tbody td{
     margin:0px;
 }
 
+#example{
+    overflow-y:auto;
+    outline:none;
+}
+
+body.modal-open{
+    margin-right: 0px;
+}
+
+.modal-dialog{
+    width: 500px;
+    margin-left:-250px;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    padding: 0px;
+}
+
+.modal-header{
+    background-color: #555;
+    margin: 5px;
+    color: #fff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.modal-body{
+    margin: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+#pickworkoutlist > div{
+    background-color: white;
+    margin: 5px;
+    padding:5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.modal-body > h4{
+    margin-left: 5px;
+}
+
+#pickworkoutlist > div > p{
+    margin:0px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.infoLabel{
+    font-weight: bold;
+}
+
+.workoutHeader{
+    background-color: #f0f0f0;
+    display: inline-block;
+    width:100%;
+    line-height:200%;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.workoutHeader p{
+    display: inline-block;
+    vertical-align:middle;
+    margin:0px;
+}
+
+.workoutLabel{
+    font-size: large;
+    padding-left: 5px;
+    font-weight: bold;
+}
+
+#pickworkoutlist > div:hover{
+    background-color: #D9E8F4;
+    cursor: pointer;
+}
+
+.duration{
+    float: right;
+    padding-right:5px;
+}

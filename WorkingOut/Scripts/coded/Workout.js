@@ -16,7 +16,9 @@
         this.weight = w;
     }
 
-    $("#datepicker").datepicker();
+    $("#datepicker").datepicker({
+        startDate: "01/01/2000"
+    });
 
     $("#datepicker").on("changeDate", function (event) {
         $("#WorkoutDate").val(

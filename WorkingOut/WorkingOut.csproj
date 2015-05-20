@@ -197,7 +197,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\coded\WorkoutIndex.js" />
+    <Content Include="Scripts\coded\Calendar.js" />
     <Content Include="Scripts\coded\Workout.js" />
     <Content Include="Scripts\ie-10-viewport-bug-workaround.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

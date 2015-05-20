@@ -4,16 +4,91 @@
 
     $(".dayInfo").each(function (index) {
         $(this).click(function (e) {
-            if ($(this).find(".singleID").length > 0) {
-                window.location = "/Workout/Edit/" + $(this).find(".singleID:first").val();
-            }
+            if ($(this).find("p").length > 0) {
+                var day = $(this).prev(".dayNum").text().trim();
+                var date = months[$("#dateMonth").val()] + " " + day + ", " + $("#dateYear").val();
+                $("#pickworkoutdate").text(date);
+                var curDay = ($("#dateMonth").val() * 1 + 1) + "/" + day + "/" + $("#dateYear").val();
+                var workoutlist = calendarEntries[curDay];
+                $("#pickworkoutlist").children().remove();
+                jQuery.each(workoutlist, function (index) {
+                    var div = document.createElement("div");
+                                                
+                    var a = document.createElement("a");
+                    $(a).attr("href", "/Workout/Edit/" + this.workoutID);
 
+                    var workout = document.createElement("div");
+                    $(workout).addClass("workoutHeader");
+                    var p = document.createElement("p");
+                    $(p).text("Workout # " + (index * 1 + 1) + ":");
+                    $(p).addClass("workoutLabel");
+                    $(workout).append(p);
+                    var p = document.createElement("p");
+                    $(p).text(((this.workoutLength != 0) ? (this.workoutLength + " min") : ""));
+                    $(p).addClass("duration");
+                    $(workout).append(p);
+
+                    var weight = document.createElement("p");
+                    var span = document.createElement("span");
+                    $(span).text("Weight: ");
+                    $(span).addClass("infoLabel");
+                    $(weight).append(span);
+                    $(weight).append(this.workoutWeight);
+                        
+                    var exercises = document.createElement("p");
+                    var span = document.createElement("span");
+                    $(span).text("Number of Exercises: ");
+                    $(span).addClass("infoLabel");
+                    $(exercises).append(span);
+                    $(exercises).append(this.workoutExercises);
+
+                    var groups = document.createElement("p");
+                    var span = document.createElement("span");
+                    $(span).text("Muscle Groups: ");
+                    $(span).addClass("infoLabel");
+                    $(groups).append(span);
+                    $(groups).append(this.workoutMuscleGroups.toString().replace(/,/g,", "));
+
+                    var notes = document.createElement("p");
+                    var span = document.createElement("span");
+                    $(span).text("Notes: ");
+                    $(span).addClass("infoLabel");
+                    $(notes).append(span);
+                    if (this.workoutNotes) {
+                        var toolong = (this.workoutNotes.length > 50);
+                        var shortNotes = toolong ? (this.workoutNotes.substr(0, 50)) : this.workoutNotes;
+                        shortNotes = toolong ? (shortNotes.substr(0, shortNotes.lastIndexOf(' ')) + "&hellip;") : shortNotes;
+                        $(notes).append(shortNotes);
+                    }
+
+                    $(div).append(workout);
+                    $(div).append(weight);
+                    $(div).append(exercises);
+                    $(div).append(groups);
+                    $(div).append(notes);
+
+                    var day = this.workoutID;
+
+                    $(div).on('click', function () {
+                        window.location = "/Workout/Edit/" + day;
+                    });
+
+                    $("#pickworkoutlist").append(div);
+                });
+                $("#example").modal('toggle');
+                $(".modal-dialog").css({
+                    'margin-top': function () {
+                        return $(".modal-content").outerHeight() / 2 * -1;
+                    }
+                });
+            }
         });
     });
 
     $(".addToCalendar").each(function (index) {
         $(this).click(function (e) {
-            window.location = "/Workout/Create/?addDate=" + $(this).attr("add-date");
+            var addDate = new Date($(this).attr("add-date"));
+            window.location = "/Workout/Create/" + addDate.getFullYear() + "/" + (addDate.getMonth() + 1) + "/" + (addDate.getDate() < 10 ? "0" : "") + addDate.getDate();
         });
     });
 
@@ -113,15 +188,8 @@
                 var workouts = calendarEntries[curDay];
                 if (workouts != null) {
                     var p = document.createElement("p");
-                    $(p).text("You have " + workouts.length + " workouts on this day.");
+                    $(p).text("You have " + workouts.length + (workouts.length == 1 ? " workout" : " workouts")  + " on this day.");
                     $(this).find(".dayInfo").append(p);
-                    if (workouts.length == 1) {
-                        var hidden = document.createElement("input");
-                        $(hidden).attr("type", "hidden");
-                        $(hidden).addClass("singleID");
-                        $(hidden).val(workouts[0].workoutID);
-                        $(this).find(".dayInfo").append(hidden);
-                    }
                 }
             }
             else {
@@ -160,4 +228,9 @@
             }
         });
     }
+
+    $("#example").modal({
+        backdrop: false,
+        show: false
+    });
 });

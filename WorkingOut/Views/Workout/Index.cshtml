@@ -101,10 +101,6 @@
                             if (Model.ContainsKey(lookupDate))
                             {
                                 List<WorkingOut.Models.CalendarViewModel> workouts = Model[lookupDate].ToList();
-                                if (workouts.Count == 1)
-                                {
-                                    <input type="hidden" class="singleID" value="@workouts.First().workoutID" />
-                                }
                                 <p>You have @workouts.Count @((workouts.Count == 1) ? "workout" : "workouts")  on this day. </p>
                             }
                         }
@@ -131,12 +127,31 @@
     </tbody>
 </table>
 
+<div id="example" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                
+                <h4>Workouts for <span id="pickworkoutdate"></span></h4>
+            </div>
+            <div class="modal-body">
+                <h4>Choose A Workout To View/Edit</h4>
+                <div id="pickworkoutlist"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>  
+
 <script>
     var calendarEntries = @Html.Raw(Json.Encode(Model));
 </script>
 
 @section Scripts{
-    @Scripts.Render("~/Scripts/coded/WorkoutIndex.js")
+    @Scripts.Render("~/Scripts/coded/Calendar.js")
+    @Scripts.Render("~/bundles/bootstrap")
 }
 @section Styles{
     @Styles.Render("~/Content/Calendar.css")

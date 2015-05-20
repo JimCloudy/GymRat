@@ -16,11 +16,11 @@ namespace WorkingOut.Controllers
         private WorkoutContext db = new WorkoutContext();
 
         // GET: Workout
-        public ActionResult Index(DateTime? cDate)
+        public ActionResult Index(int? year, int? month)
         {
             ViewBag.WorkoutsTab = "active";
 
-            Dictionary<DateTime, List<Workout>> workouts = db.Workouts.Include("Routine").GroupBy(w => w.WorkoutDate).ToDictionary(g => g.Key, g => g.ToList());
+            Dictionary<DateTime, List<Workout>> workouts = db.Workouts.Include("Routine").Include("Routine.Exercise").GroupBy(w => w.WorkoutDate).ToDictionary(g => g.Key, g => g.ToList());
 
             Dictionary<string, IEnumerable<CalendarViewModel>> model = new Dictionary<string, IEnumerable<CalendarViewModel>>();
 
@@ -34,6 +34,8 @@ namespace WorkingOut.Controllers
                     calendarViewModel.workoutNotes = w.Notes;
                     calendarViewModel.workoutWeight = w.ScaleWeight;
                     calendarViewModel.workoutExercises = w.Routine.Count;
+                    calendarViewModel.workoutMuscleGroups = w.Routine.Select(e => e.Exercise.BodyPart).Distinct().ToArray();
+                    calendarViewModel.workoutLength = w.Duration;
                     valueEnum.Add(calendarViewModel);
                 }
                 string keyDate = (string)group.Key.ToShortDateString();
@@ -43,8 +45,9 @@ namespace WorkingOut.Controllers
 
             DateTime gotoDate = new DateTime();
 
-            if (cDate != null) {
-                gotoDate = (DateTime)cDate;
+            if (year != null && month != null) {
+                //gotoDate = new DateTime((int)year, (int)month, 1);
+                gotoDate = DateTime.Now;
             }
             else
             {
@@ -80,20 +83,19 @@ namespace WorkingOut.Controllers
             return View(workout);
         }
 
-        // GET: Workout/Create
-        public ActionResult Create(DateTime? addDate)
+        public ActionResult Create(int? year, int? month, int? day)
         {
             WorkoutViewModel model = new WorkoutViewModel();
             model.AddedExercises = new List<AddedExerciseViewModel>();
-            
+
             Workout workout = new Workout();
-            if (addDate == null)
+            if (year != null && month != null && day != null)
             {
-                workout.WorkoutDate = DateTime.Now;
+                workout.WorkoutDate = new DateTime((int)year,(int)month,(int)day);
             }
             else
             {
-                workout.WorkoutDate = (DateTime)addDate;
+                workout.WorkoutDate = DateTime.Now;
             }
             workout.WorkoutType = "Weight Lifting";
 
@@ -131,10 +133,13 @@ namespace WorkingOut.Controllers
                         exercise.WorkoutID = w.ID;
                         db.WorkoutExercises.Add(exercise);
 
-                        foreach (Set set in exercise.Sets.ToList())
+                        if (exercise.Sets != null)
                         {
-                            set.WorkoutExerciseID = exercise.ID;
-                            db.Sets.Add(set);
+                            foreach (Set set in exercise.Sets.ToList())
+                            {
+                                set.WorkoutExerciseID = exercise.ID;
+                                db.Sets.Add(set);
+                            }
                         }
                     }
                     index++;
@@ -254,7 +259,7 @@ namespace WorkingOut.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(workout);
+            return View("Workout", workout);
         }
 
         // GET: Workout/Delete/5
