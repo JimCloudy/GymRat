@@ -307,19 +307,15 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Workout\Create.cshtml" />
     <Content Include="Views\Workout\Delete.cshtml" />
-    <Content Include="Views\Workout\Details.cshtml" />
-    <Content Include="Views\Workout\Edit.cshtml" />
     <Content Include="Views\Workout\Index.cshtml" />
-    <Content Include="Views\Workout\EditorTemplates\WorkoutExercise-2.cshtml" />
-    <Content Include="Views\Workout\DisplayTemplates\WorkoutExercise.cshtml" />
     <Content Include="Views\Workout\_WorkoutExercise.cshtml" />
     <Content Include="Views\Workout\Workout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="ViewModels\" />
+    <Folder Include="Views\Workout\DisplayTemplates\" />
+    <Folder Include="Views\Workout\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -342,7 +338,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>56171</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

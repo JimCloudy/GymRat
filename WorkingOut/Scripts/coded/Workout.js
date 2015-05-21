@@ -258,6 +258,41 @@
         window.location.href = window.location.protocol + "//" + window.location.host + "/Workout";
     });
 
+    $("#deleteWorkout").click(function (e) {
+        $("#deleteModal").modal('toggle');
+        var mainContainer = $(".container").get(0);
+        var windowHeight = $(window).height();
+        if (mainContainer.scrollHeight <= windowHeight) {
+            $("body.modal-open").css({
+                'margin-right': '0px'
+            });
+            $("#deleteModal").css({
+                'overflow-y': 'auto'
+            });
+        }
+        else {
+            $("#deleteModal").css({
+                'overflow-y': 'scroll'
+            });
+        }
+        $(".modal-dialog").css({
+            'margin-top': function () {
+                return $(".modal-content").outerHeight() / 2 * -1;
+            }
+        });
+        /**/
+    });
+
+    $("#confirmDelete").click(function (e) {
+        var token = $("input[name=__RequestVerificationToken]").val();
+        $.post("/Workout/Delete", { "id": $("#ID").val(), "__RequestVerificationToken": token },
+            function (data) {
+                if (data.workoutDeleted) {
+                    window.location = "/Workout/";
+                }
+            });
+    });
+
     //addSet(row number, exercise id, data for set)
     function addSet(row, exerciseID, setdata) {
         var routineIndex = findWorkoutExercise(exerciseID);
@@ -481,4 +516,9 @@
     populateRoutine();
 
     showHideNoAddedExercises();
+
+    $("#deleteModal").modal({
+        backdrop: false,
+        show: false
+    });
 });

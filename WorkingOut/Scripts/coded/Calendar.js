@@ -75,7 +75,7 @@
 
                     $("#pickworkoutlist").append(div);
                 });
-                $("#example").modal('toggle');
+                $("#workoutSelect").modal('toggle');
                 $(".modal-dialog").css({
                     'margin-top': function () {
                         return $(".modal-content").outerHeight() / 2 * -1;
@@ -229,7 +229,7 @@
         });
     }
 
-    $("#example").modal({
+    $("#workoutSelect").modal({
         backdrop: false,
         show: false
     });
