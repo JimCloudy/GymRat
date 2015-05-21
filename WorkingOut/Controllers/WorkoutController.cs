@@ -126,23 +126,26 @@ namespace WorkingOut.Controllers
                 db.Workouts.Add(w);
 
                 int index = 0;
-                foreach (WorkoutExercise exercise in workout.Routine.ToList())
+                if (workout.Routine != null)
                 {
-                    if (DeleteExercise[index] != "true")
+                    foreach (WorkoutExercise exercise in workout.Routine.ToList())
                     {
-                        exercise.WorkoutID = w.ID;
-                        db.WorkoutExercises.Add(exercise);
-
-                        if (exercise.Sets != null)
+                        if (DeleteExercise[index] != "true")
                         {
-                            foreach (Set set in exercise.Sets.ToList())
+                            exercise.WorkoutID = w.ID;
+                            db.WorkoutExercises.Add(exercise);
+
+                            if (exercise.Sets != null)
                             {
-                                set.WorkoutExerciseID = exercise.ID;
-                                db.Sets.Add(set);
+                                foreach (Set set in exercise.Sets.ToList())
+                                {
+                                    set.WorkoutExerciseID = exercise.ID;
+                                    db.Sets.Add(set);
+                                }
                             }
                         }
+                        index++;
                     }
-                    index++;
                 }
 
                 db.SaveChanges();
@@ -194,6 +197,7 @@ namespace WorkingOut.Controllers
             model.ExerciseList = PopulateExerciseList();
             ViewBag.ExerciseTypes = PopulateTypeList();
             ViewBag.Title = "Edit Workout";
+            ViewBag.ShowDelete = "true";
 
             return View("Workout", model);
         }
@@ -208,55 +212,58 @@ namespace WorkingOut.Controllers
             if (ModelState.IsValid)
             {
                 int index = 0;
-                foreach (var exercise in workout.Routine.ToList())
+                if (workout.Routine != null)
                 {
-                    if (DeleteExercise[index] == "true")
+                    foreach (var exercise in workout.Routine.ToList())
                     {
-                        if (exercise.ID != 0)
+                        if (DeleteExercise[index] == "true")
                         {
-                            WorkoutExercise w = db.WorkoutExercises.Where(x => x.ID == exercise.ID && x.WorkoutID == exercise.WorkoutID).Single();
-                            db.WorkoutExercises.Remove(w);
-                        }
-                        workout.Routine.Remove(exercise);
-                    }
-                    else
-                    {
-                        if (exercise.ID == 0)
-                        {
-                            exercise.WorkoutID = workout.ID;
-                            db.WorkoutExercises.Add(exercise);
-
-                            if (exercise.Sets != null)
+                            if (exercise.ID != 0)
                             {
-                                foreach (Set set in exercise.Sets.ToList())
-                                {
-                                    set.WorkoutExerciseID = exercise.ID;
-                                    db.Sets.Add(set);
-                                }
+                                WorkoutExercise w = db.WorkoutExercises.Where(x => x.ID == exercise.ID && x.WorkoutID == exercise.WorkoutID).Single();
+                                db.WorkoutExercises.Remove(w);
                             }
+                            workout.Routine.Remove(exercise);
                         }
                         else
                         {
-                            if (exercise.Sets != null)
+                            if (exercise.ID == 0)
                             {
-                                foreach (Set set in exercise.Sets.ToList())
+                                exercise.WorkoutID = workout.ID;
+                                db.WorkoutExercises.Add(exercise);
+
+                                if (exercise.Sets != null)
                                 {
-                                    if (set.ID == 0)
+                                    foreach (Set set in exercise.Sets.ToList())
                                     {
                                         set.WorkoutExerciseID = exercise.ID;
                                         db.Sets.Add(set);
                                     }
-                                    else
-                                    {
-                                        db.Entry(set).State = EntityState.Modified;
-                                    }
                                 }
                             }
+                            else
+                            {
+                                if (exercise.Sets != null)
+                                {
+                                    foreach (Set set in exercise.Sets.ToList())
+                                    {
+                                        if (set.ID == 0)
+                                        {
+                                            set.WorkoutExerciseID = exercise.ID;
+                                            db.Sets.Add(set);
+                                        }
+                                        else
+                                        {
+                                            db.Entry(set).State = EntityState.Modified;
+                                        }
+                                    }
+                                }
 
-                            db.Entry(exercise).State = EntityState.Modified;
+                                db.Entry(exercise).State = EntityState.Modified;
+                            }
                         }
+                        index++;
                     }
-                    index++;
                 }
 
                 db.Entry(workout).State = EntityState.Modified;
@@ -268,38 +275,29 @@ namespace WorkingOut.Controllers
             return View("Workout", workout);
         }
 
-        // GET: Workout/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Workout workout = db.Workouts.Find(id);
-            if (workout == null)
-            {
-                return HttpNotFound();
-            }
-
-            workout.Routine = db.WorkoutExercises.Where(x => x.WorkoutID == id).ToList();
-
-            return View(workout);
-        }
-
-        // POST: Workout/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // $.POST: Workout/Delete/5
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Delete(int id)
         {
             Workout workout = db.Workouts.Find(id);
             List<WorkoutExercise> exercises = db.WorkoutExercises.Where(x => x.WorkoutID == workout.ID).ToList();
-            foreach (var exercise in exercises)
+            if (exercises.Count > 0)
             {
-                db.WorkoutExercises.Remove(exercise);
+                foreach (var exercise in exercises.ToList())
+                {
+                    if (exercise.Sets.Count > 0)
+                    {
+                        foreach (var set in exercise.Sets.ToList())
+                        {
+                            db.Sets.Remove(set);
+                        }
+                    }
+                    db.WorkoutExercises.Remove(exercise);
+                }
             }
             db.Workouts.Remove(workout);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return Json(new { workoutDeleted = true });
         }
 
         protected override void Dispose(bool disposing)

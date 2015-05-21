@@ -97,11 +97,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-md-3">
-                                            <input type="button" value="Add Exercise" class="btn btn-success form-control" id="addExerciseSubmit"/>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input type="button" value="Cancel" class="btn btn-warning form-control" id="addExerciseCancel"/>
+                                        <div class="col-md-12">
+                                            <div class="btn-group" role="group" aria-label="add-exercise-actions" id="addExerciseActions">
+                                                <input type="button" value="Add Exercise" class="btn btn-success" id="addExerciseSubmit" />
+                                                <input type="button" value="Cancel" class="btn btn-danger" id="addExerciseCancel" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -190,11 +190,34 @@
         </div>
 
         <div class="form-group workout_info">
-            <div class="col-md-3">
-                <input type="submit" id="saveWorkout" value="Save Workout" class="btn btn-primary form-control" />
+            <div class="col-md-12">
+                <div class="btn-group" role="group" aria-label="workout-actions" id="workoutActions">
+                    <input type="submit" id="saveWorkout" value="Save Workout" class="btn btn-primary" />
+                    @if (ViewBag.showDelete == "true")
+                    {
+                        <input type="button" value="Delete Workout" id="deleteWorkout" class="btn btn-warning" />
+                    }
+                    <input type="button" value="Cancel" id="cancelWorkout" class="btn btn-danger" />
+                </div>
             </div>
-            <div class="col-md-2">
-                <input type="button" value="Cancel" id="cancelWorkout" class="btn btn-danger form-control" />
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Delete Workout</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>Are You Sure You Want To Delete This Workout?</h4>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-group" role="group" aria-label="workout-actions" id="workoutActions">
+                        <button type="button" class="btn btn-default btn-success" id="confirmDelete">Yes</button>
+                        <button type="button" class="btn btn-default btn-danger" data-dismiss="modal">No</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -208,6 +231,7 @@
     @Scripts.Render("~/Scripts/Routine")
     @Scripts.Render("~/Scripts/Coded/Workout.js")
     @Scripts.Render("~/Scripts/bootstrap-datepicker.js")
+    @Scripts.Render("~/bundles/bootstrap")
 }
 
 @section Styles{
