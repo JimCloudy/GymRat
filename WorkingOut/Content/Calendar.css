@@ -32,6 +32,11 @@ tbody td{
     text-align: right;
 }
 
+.dayNum p{
+    display:inline;
+    padding:5px;
+}
+
 .dayInfo{
     height: 50px;
 }
@@ -248,4 +253,11 @@ body.modal-open{
 .duration{
     float: right;
     padding-right:5px;
+}
+
+.highlight p{
+    background-color:yellow;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }

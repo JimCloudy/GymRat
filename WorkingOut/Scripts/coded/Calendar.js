@@ -175,7 +175,7 @@
             $(this).find(".dayInfo").children().remove();
             if (index < startDay) {
                 $(this).addClass("dayNotActive");
-                $(this).find(".dayNum").text("");
+                $(this).find(".dayNum p").text("");
                 $(this).find(".dayAdd button").attr("add-date", "");
                 return;
             }
@@ -183,7 +183,7 @@
             if (dayOfMonth <= daysInMonth) {
                 var curDay = (newDate.getMonth() + 1) + "/" + dayOfMonth + "/" + newDate.getFullYear();
                 $(this).addClass("dayActive");
-                $(this).find(".dayNum").text(dayOfMonth);
+                $(this).find(".dayNum p").text(dayOfMonth);
                 $(this).find(".dayAdd button").attr("add-date", curDay);
                 var workouts = calendarEntries[curDay];
                 if (workouts != null) {
@@ -227,10 +227,30 @@
                 $(this).attr("selected", false);
             }
         });
+        highlightCurrentDate();
+    }
+
+    function highlightCurrentDate() {
+        var month = $("#dateMonth").val();
+        var year = $("#dateYear").val();
+        var currentDate = new Date();
+
+        $(".dayNum").removeClass("highlight");
+
+        if (currentDate.getFullYear() == year && currentDate.getMonth() == month) {
+            var dayNum = $(".dayActive .dayNum");
+            dayNum.each(function (index) {
+                if ($(this).text() == currentDate.getDate()) {
+                    $(this).addClass("highlight");
+                }
+            });
+        }
     }
 
     $("#workoutSelect").modal({
         backdrop: false,
         show: false
     });
+
+    highlightCurrentDate();
 });
