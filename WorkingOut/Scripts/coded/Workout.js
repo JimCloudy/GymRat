@@ -80,7 +80,13 @@
                 }
                 rowSets++;
                 addSet(row, exerciseID, sets[i]);
+                var saveButton = $(exerciseDiv).find(".saveExEdit:visible");
+                if (saveButton.length > 0) {
+                    $(setRows).find(".set_added_info").hide();
+                    $(setRows).find(".set_added_input").css("display","inline-block");
+                }
             }
+            $(exerciseDiv).find(".edit-link:eq(0)").css("display", "initial");
         }
         else {
             //create main exercise div
@@ -117,6 +123,10 @@
 
             var h6edit = document.createElement("h6");
             $(h6edit).addClass("display-inline");
+            $(h6edit).addClass("edit-link");
+            if(sets.length == 0){
+                $(h6edit).css("display", "none");
+            }
 
             var editLink = document.createElement("a");
             $(editLink).addClass("edit_added");
@@ -138,7 +148,6 @@
             $(h6delete).append(deleteLink);
 
             $(editDeleteDiv).append(h6edit);
-            $(editDeleteDiv).append("&nbsp;");
             $(editDeleteDiv).append(h6delete);
 
             //create div to hold save exercise button

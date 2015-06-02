@@ -7,7 +7,18 @@
         <div class="col-md-2">
             <p class="set_added_name">@Model.ExerciseName</p>
             <div class="editDeleteEx">
-                <h6 class="display-inline"><a class="edit_added" edit-id="@Model.Exercise.ExerciseID.ToString()">Edit</a></h6> <h6 class="display-inline"><a class="delete_added" delete-id="@Model.Exercise.ExerciseID.ToString()">Delete</a></h6>
+                @{
+                    var editLinkDisplay = "display:none";
+                    if (Model.Sets.Count() > 0)
+                    {
+                        editLinkDisplay = "";
+                    }
+                }
+                <h6 class="display-inline edit-link" style="@editLinkDisplay">
+                    <a class="edit_added" edit-id="@Model.Exercise.ExerciseID.ToString()">Edit</a>
+                </h6><h6 class="display-inline">
+                    <a class="delete_added" delete-id="@Model.Exercise.ExerciseID.ToString()">Delete</a>
+                </h6>
             </div>
             <div class="saveExEdit">
                 <button type="button" class="btn btn-success btn-xs">Save Exercise</button> 

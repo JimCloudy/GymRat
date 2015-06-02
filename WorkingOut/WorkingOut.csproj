@@ -307,7 +307,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Workout\Delete.cshtml" />
     <Content Include="Views\Workout\Index.cshtml" />
     <Content Include="Views\Workout\_WorkoutExercise.cshtml" />
     <Content Include="Views\Workout\Workout.cshtml" />

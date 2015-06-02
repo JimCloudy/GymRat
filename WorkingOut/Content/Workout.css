@@ -188,3 +188,10 @@ div.set_entry .set_entry_wt{
     padding:10px;
 }
 
+.edit-link{
+    margin-right:10px;
+}
+
+#datepicker:hover, #addExerciseLink:hover, .edit_added:hover, .delete_added:hover {
+    cursor:pointer;
+}
