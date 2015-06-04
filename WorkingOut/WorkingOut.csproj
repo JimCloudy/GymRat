@@ -185,8 +185,10 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Calendar.css" />
+    <Content Include="Content\Contact.css" />
     <Content Include="Content\datepicker.css" />
     <Content Include="Content\datepicker3.css" />
+    <Content Include="Content\Images\20150501_180035.jpg" />
     <Content Include="Content\jumbotron-narrow.css" />
     <Content Include="Content\Workout.css" />
     <Content Include="favicon.ico" />

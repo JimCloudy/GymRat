@@ -1,16 +1,49 @@
 ﻿@{
     ViewBag.Title = "Contact";
 }
-<h2>Brent Lynch</h2>
 
-<address>
-    900 Pearl Ave Apt 104<br />
-    Marshall, MN 56258<br />
-    <abbr title="Phone">P:</abbr>
-    (507)828-7214
-</address>
+<div class="row" id="pic">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <img src="~/Content/Images/20150501_180035.jpg" id="mePic" />
+    </div>
+</div>
+<div class="row" id="name">
+    <div class="col-md-4 col-md-offset-4">
+        <h2>Brent Lynch</h2>
+    </div>
+</div>
 
-<address>
-    <strong>Email:</strong>   <a href="mailto:lynchbrent@hotmail.com">lynchbrent@hotmail.com</a><br />
-    <strong>GitHub:</strong> <a href="https://github.com/JimCloudy/GymRat">github.com/JimCloudy/GymRat</a>
-</address>
+<div class="row" id="links">
+    <div class="col-md-6 col-md-offset-3">
+        <address>
+            <strong>Email:</strong>   <a href="mailto:lynchbrent@hotmail.com">lynchbrent@hotmail.com</a><br />
+            <strong>GitHub:</strong> <a href="https://github.com/JimCloudy/GymRat">github.com/JimCloudy/GymRat</a>
+        </address>
+    </div>
+</div>
+<div class="row" id="bio">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <p>
+            Hi, I'm Brent. I'm an energetic soul who enjoys seeking out a challenge. Taking on tasks beyond my scope brings the same adrenaline rush 
+            to me as base jumping does for extreme sport enthusiasts.
+        </p>
+        <p>
+            My working experience has brought a splendor of skills and given me a wide range of technologies to notch off my belt. I've worked for five years 
+            on the server side of things creating reports and processing data to be used for senior management's operational decisions. A need to be challenged 
+            brought me over to web development, collaborating with in-house users and agents across six states. 
+        </p>
+        <p>
+            Now for a new challenge. I'm looking to expand my horizon into the .Net world. This site is my gateway into that world. I'm using this site as a learning 
+            tool and for anyone with interest to look at what I can provide to their team. If I've got your attention and you want to know more please use the email link above,
+            I look forward to talking to you!
+        </p>
+    </div>
+</div>
+
+
+
+@section Styles{
+    @Styles.Render("~/Content/Contact.css")
+}

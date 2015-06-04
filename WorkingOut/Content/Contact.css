@@ -1,0 +1,7 @@
+﻿#mePic{
+    border:10px outset #428bca;
+}
+
+#name, #address, #pic, #links{
+    text-align:center;
+}
